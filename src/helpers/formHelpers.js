@@ -1,4 +1,3 @@
-
 export function mapFields ({ formFields, newStructure }) {
   const mappedFields = Object.fromEntries(
     Object.entries(formFields).map(([key, value]) => {

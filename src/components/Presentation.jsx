@@ -1,6 +1,6 @@
 import { useAllTypeOfVehicles } from '../hooks/useTypeOfVehicles'
 
-export function Banner (){
+export function Banner () {
   const typeOfVehicles = useAllTypeOfVehicles()
 
   return (
@@ -13,7 +13,7 @@ export function Banner (){
   )
 }
 
-function ItemBanner ({ text, imgUrl, className = '' }){
+function ItemBanner ({ text, imgUrl, className = '' }) {
   return (
     <div className={'relative overflow-hidden ' + className}>
       <img className='absolute w-full h-full object-cover' src={imgUrl} alt={text} />

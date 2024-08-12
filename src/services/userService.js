@@ -1,6 +1,6 @@
 import { USERS_ENDPOINT } from '../resources/myApi'
 
-export async function DeleteUser (id){
+export async function DeleteUser (id) {
   return await new Promise((resolve, reject) => {
     fetch(USERS_ENDPOINT + id, { method: 'DELETE' })
       .then(async res => {
@@ -18,7 +18,7 @@ export async function DeleteUser (id){
   })
 }
 
-export async function CreateUser (user){
+export async function CreateUser (user) {
   return await new Promise((resolve, reject) => {
     fetch(USERS_ENDPOINT, {
       method: 'POST',

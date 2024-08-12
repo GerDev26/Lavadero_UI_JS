@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { USERS_ENDPOINT } from '../resources/myApi'
 
-export function useAllUsers (){
+export function useAllUsers () {
   const [users, setUsers] = useState([])
 
   useEffect(() => {

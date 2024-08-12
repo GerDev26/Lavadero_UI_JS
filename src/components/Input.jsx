@@ -26,7 +26,7 @@ export function InputHidden () {
   )
 }
 
-export function Input ({ text, type, message }){
+export function Input ({ text, type, message }) {
   return (
     <label className='w-60 flex flex-col'>
       <span className='text-lg text-gray-950 font-semibold capitalize'>{text}</span>

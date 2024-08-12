@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { APPOINTMENTS_ENDPOINT } from '../resources/myApi'
 
-export function useAllAppointments () {
+export function useAppointmentsDates () {
   const [appointments, setAppointments] = useState([])
 
   useEffect(() => {

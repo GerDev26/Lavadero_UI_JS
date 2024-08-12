@@ -21,6 +21,7 @@ export function Signup () {
       setAccessToken({ token })
       navigate('/')
     } catch {
+      // eslint-disable-next-line no-undef
       alert('Hubo un error al registrarse')
     }
   }

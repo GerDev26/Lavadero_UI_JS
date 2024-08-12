@@ -1,6 +1,6 @@
 import { useAllServices } from '../../hooks/useServices'
 
-export function Services (){
+export function Services () {
   const services = useAllServices()
 
   return (

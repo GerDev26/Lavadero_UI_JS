@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { closeSession } from '../services/authService'
 import { getAccessToken, removeAccessToken } from '../helpers/tokenHelpers'
 
-export function Navbar (){
+export function Navbar () {
   const [menuState, setMenuState] = useState(false)
 
   const toggleMenu = () => {
@@ -16,8 +16,8 @@ export function Navbar (){
       <div className=' absolute top-0 left-0 w-full h-full bg-black z-0' />
       <h1 className='text-4xl font-bold z-10'><Link to='/'>RFcarwash</Link></h1>
       <Menu menuState={menuState}>
-        <Item text='Mis autos' to='/CRUD' />
-        <Item text='Mis turnos' to='/TURNOS' />
+        {/*         <Item text='Mis autos' to='/CRUD' />
+        <Item text='Mis turnos' to='/TURNOS' /> */}
         <SessionItem />
       </Menu>
       <Bars3Icon onClick={toggleMenu} className='relative z-50 w-8 h-8 mr-2 text-white md:hidden' />
@@ -25,7 +25,7 @@ export function Navbar (){
   )
 }
 
-export function Menu ({ children, menuState }){
+export function Menu ({ children, menuState }) {
   const menuClass = menuState ? ' translate-x-0' : ' translate-x-full'
 
   return (
@@ -40,7 +40,7 @@ export function Menu ({ children, menuState }){
   )
 }
 
-function Item ({ text, to, onClick }){
+function Item ({ text, to, onClick }) {
   return (
     <Link onClick={onClick} to={to} className='group relative px-4 py-3 cursor-pointer uppercase'>
       <h3 className='transition-all relative z-10 md:group-hover:text-black'>{text}</h3>
@@ -50,7 +50,7 @@ function Item ({ text, to, onClick }){
     </Link>
   )
 }
-function SessionItem (){
+function SessionItem () {
   try {
     getAccessToken()
     return <CloseSessionItem />
@@ -59,7 +59,7 @@ function SessionItem (){
   }
 }
 
-function CloseSessionItem (){
+function CloseSessionItem () {
   const token = getAccessToken()
 
   const logout = async () => {

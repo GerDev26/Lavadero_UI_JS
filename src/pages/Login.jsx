@@ -20,6 +20,7 @@ export function Login () {
       setAccessToken({ token })
       navigate('/')
     } catch (error) {
+      // eslint-disable-next-line no-undef
       alert(error)
     }
   }
@@ -48,7 +49,7 @@ export function Login () {
             <button type='submit' className='transition duration-50 w-full h-10 bg-black font-semibold text-white text-lg rounded-sm hover:scale-105'>Iniciar Sesion </button>
             <Link to='/' className='transition duration-50 w-full h-10 bg-white border-2 rounded-sm font-semibold border-black flex items-center justify-center hover:scale-105'> Volver </Link>
           </div>
-          <p>¿Olvidaste tu contraseña? <u className='linear hover:text-blue-600 cursor-pointer'>Recuperala</u></p>
+          <p>¿Olvidaste tu contraseña? <u className='linear hover:text-blue-600 cursor-pointer'><Link to='/sendpassword'> Recuperala </Link></u></p>
           <p>Si no tienes una cuenta puedes <u><Link to='/signup'>Registrate</Link></u></p>
         </form>
 
