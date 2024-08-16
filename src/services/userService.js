@@ -1,26 +1,26 @@
 import { USERS_ENDPOINT } from '../resources/myApi'
 
 export async function DeleteUser (id) {
-  return await new Promise((resolve, reject) => {
-    fetch(USERS_ENDPOINT + id, { method: 'DELETE' })
-      .then(async res => {
-        if (!res.ok) {
-          reject(new Error('Error en la consulta'))
-        }
-        const data = await res.json()
-        console.log(data)
-        resolve(data)
-      })
-      .catch(error => {
-        console.log(error)
-        reject(error)
-      })
-  })
+  try {
+    const response = await fetch(`${USERS_ENDPOINT}${id}`, { method: 'DELETE' })
+
+    if (!response.ok) {
+      const errorData = await response.json()
+      throw new Error(errorData)
+    }
+
+    const data = await response.json()
+    console.log(data)
+    return data
+  } catch (error) {
+    console.error(error)
+    throw error
+  }
 }
 
 export async function CreateUser (user) {
-  return await new Promise((resolve, reject) => {
-    fetch(USERS_ENDPOINT, {
+  try {
+    const response = await fetch(USERS_ENDPOINT, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -28,15 +28,17 @@ export async function CreateUser (user) {
       },
       body: JSON.stringify(user)
     })
-      .then(async res => {
-        if (!res.ok) {
-          reject(new Error('Error en la consulta'))
-        }
-        const data = await res.json()
-        resolve(data)
-      })
-      .catch(error => {
-        reject(error)
-      })
-  })
+
+    if (!response.ok) {
+      const errors = await response.json()
+      console.log(errors)
+      throw new Error(errors)
+    }
+
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error(error)
+    throw error
+  }
 }

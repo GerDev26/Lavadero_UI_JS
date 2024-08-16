@@ -16,9 +16,11 @@ export function Navbar () {
       <div className=' absolute top-0 left-0 w-full h-full bg-black z-0' />
       <h1 className='text-4xl font-bold z-10'><Link to='/'>RFcarwash</Link></h1>
       <Menu menuState={menuState}>
-        {/*         <Item text='Mis autos' to='/CRUD' />
-        <Item text='Mis turnos' to='/TURNOS' /> */}
-        <SessionItem />
+        <SessionItemCheck>
+          {/* <Item text='Mis turnos' to='/TURNOS' /> */}
+          <Item text='Mis autos' to='/misvehiculos' />
+          <CloseSessionItem />
+        </SessionItemCheck>
       </Menu>
       <Bars3Icon onClick={toggleMenu} className='relative z-50 w-8 h-8 mr-2 text-white md:hidden' />
     </nav>
@@ -50,10 +52,10 @@ function Item ({ text, to, onClick }) {
     </Link>
   )
 }
-function SessionItem () {
+function SessionItemCheck ({ children }) {
   try {
     getAccessToken()
-    return <CloseSessionItem />
+    return <>{children}</>
   } catch (error) {
     return <Item text='Iniciar Sesión' to='/login' />
   }

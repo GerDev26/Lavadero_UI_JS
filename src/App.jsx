@@ -7,6 +7,7 @@ import { Signup } from './pages/Signup'
 import { ResetPassword } from './pages/ResetPassword'
 import { SendPassword } from './pages/SendPassword'
 import { AppointmentReserve } from './pages/AppointmentReserve'
+import { ClientVehicles } from './pages/ClientVehicles'
 export default function App () {
   return (
     <>
@@ -17,6 +18,7 @@ export default function App () {
         <Route path='/signup' element={<Signup />} />
         <Route path='/resetpassword' element={<ResetPassword />} />
         <Route path='/sendpassword' element={<SendPassword />} />
+        <Route path='/misvehiculos' element={<ClientVehicles />} />
         <Route path='/turno/:service' element={<AppointmentReserve />} />
       </Routes>
     </>

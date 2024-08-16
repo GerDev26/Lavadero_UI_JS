@@ -1,8 +1,9 @@
 import { useAllUsers } from '../../hooks/useUsers'
-import { useAllAppointments } from '../../hooks/useAppointments'
 import { useContext, useEffect } from 'react'
 import { PencilIcon, TrashIcon } from '@heroicons/react/20/solid'
 import { UsersContext } from '../../context/UserContext'
+import { useUserVehicles } from '../../hooks/useVehicles'
+import { VehicleContext } from '../../context/VehicleContext'
 
 function TableCol ({ children, onClick }) {
   return <td onClick={onClick} className='p-3 uppercase font-bold'>{children}</td>
@@ -26,15 +27,38 @@ export function Table ({ cols, children }) {
   )
 }
 
-export function AppointmentTable () {
-  const appointments = useAllAppointments()
+export function VehicleTable () {
+  const userVehicles = useUserVehicles()
+  const { setVehicles, vehicles, removeVehicle } = useContext(VehicleContext)
+
+  useEffect(() => {
+    setVehicles(userVehicles)
+  }, [userVehicles])
+  console.log(vehicles)
+  const handleDelete = async (vehicle) => {
+    await removeVehicle(vehicle)
+  }
+  const handleUpdate = () => {
+    console.log('borrar')
+  }
+
   return (
-    <Table cols={['Precio']}>
-      {appointments.map(appointment => <TableRow key={appointment.id}>{appointment.price}</TableRow>)}
+    <Table cols={['dominio', 'tipo', 'Eliminar', 'Modificar']}>
+      {(vehicles.length > 0)
+        ? vehicles.map(vehicle => (
+          <tr key={vehicle.id}>
+            <TableRow>{vehicle.vehicleDomain}</TableRow>
+            <TableRow>{vehicle.vehicleType}</TableRow>
+            <TableRow onClick={async () => await handleDelete(vehicle)}><TrashIcon className='m-auto w-6 cursor-pointer' /></TableRow>
+            <TableRow onClick={() => handleUpdate()}><PencilIcon className='m-auto w-6 cursor-pointer' /></TableRow>
+          </tr>
+        ))
+        : (
+          <tr />
+          )}
     </Table>
   )
 }
-
 export function UserTable () {
   const allUsers = useAllUsers()
   const { users, setUsers, deleteUser, updateUser } = useContext(UsersContext)
@@ -69,8 +93,8 @@ export function UserTable () {
             <TableRow>{user.surname}</TableRow>
             <TableRow>{user.phone_number}</TableRow>
             <TableRow>{user.email}</TableRow>
-            <TableRow onClick={async () => await handleDelete(user)}><TrashIcon className='m-auto w-6' /></TableRow>
-            <TableRow onClick={() => handleUpdate(user)}><PencilIcon className='m-auto w-6' /></TableRow>
+            <TableRow onClick={async () => await handleDelete(user)}><TrashIcon className='m-auto w-6 cursor-pointer' /></TableRow>
+            <TableRow onClick={() => handleUpdate(user)}><PencilIcon className='m-auto w-6 cursor-pointer' /></TableRow>
           </tr>
         ))
         : (

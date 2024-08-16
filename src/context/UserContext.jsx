@@ -1,8 +1,10 @@
 import { createContext, useReducer } from 'react'
-import { userReducer } from '../reducers/UserReducer'
+import { dataReducer } from '../reducers/dataReducer'
 import { CreateUser, DeleteUser } from '../services/userService'
 
-const initialState = [{}]
+const initialState = {
+  users: []
+}
 
 export const UsersContext = createContext({
   users: initialState.users,
@@ -13,36 +15,36 @@ export const UsersContext = createContext({
 })
 
 export const UsersProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(userReducer, initialState)
+  const [state, dispatch] = useReducer(dataReducer, initialState)
 
   const addUser = async (newUser) => {
-    dispatch({ type: 'ADD_USER', user: newUser })
+    dispatch({ type: 'ADD_ITEM', itemType: 'users', item: newUser })
     try {
       const modifyUser = await CreateUser(newUser)
-      dispatch({ type: 'UPDATE_USER', user: newUser, modifyUser })
+      dispatch({ type: 'UPDATE_ITEM', itemType: 'users', item: newUser, modifyItem: modifyUser })
     } catch (error) {
       console.error('Error adding user:', error)
-      dispatch({ type: 'DELETE_USER', user: newUser })
+      dispatch({ type: 'DELETE_ITEM', itemType: 'users', item: newUser })
     }
   }
 
-  const setUsers = (newUserlist) => {
-    dispatch({ type: 'SET_USERS', userList: newUserlist })
+  const setUsers = (newUserList) => {
+    dispatch({ type: 'SET_ITEMS', itemType: 'users', itemList: newUserList })
   }
 
   const deleteUser = async (selectedUser) => {
     const prevUserState = [...state.users]
-    dispatch({ type: 'DELETE_USER', user: selectedUser })
+    dispatch({ type: 'DELETE_ITEM', itemType: 'users', item: selectedUser })
     try {
       await DeleteUser(selectedUser.id)
     } catch (error) {
       console.error('Error deleting user:', error)
-      dispatch({ type: 'SET_USERS', userList: prevUserState })
+      dispatch({ type: 'SET_ITEMS', itemType: 'users', itemList: prevUserState })
     }
   }
 
   const updateUser = (selectedUser, modifyUser) => {
-    dispatch({ type: 'UPDATE_USER', user: selectedUser, modifyUser })
+    dispatch({ type: 'UPDATE_ITEM', itemType: 'users', item: selectedUser, modifyItem: modifyUser })
   }
 
   return (
