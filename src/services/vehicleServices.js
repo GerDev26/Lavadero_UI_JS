@@ -1,10 +1,10 @@
 import { getAccessToken } from '../helpers/tokenHelpers'
-import { USER_NEW_VEHICLE, VEHICLE_ENDPOINT } from '../resources/myApi'
+import { VEHICLE_ENDPOINT } from '../resources/myApi'
 
-export async function newClientVehicle (vehicle) {
+export async function CreateVehicle (vehicle) {
   try {
     const token = getAccessToken()
-    const res = await fetch(USER_NEW_VEHICLE, {
+    const res = await fetch(VEHICLE_ENDPOINT, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -15,8 +15,8 @@ export async function newClientVehicle (vehicle) {
     })
 
     if (!res.ok) {
-      const error = res.json()
-      throw new Error(error)
+      const error = await res.json()
+      throw new Error(error.message)
     }
 
     const data = await res.json()
@@ -30,9 +30,11 @@ export async function newClientVehicle (vehicle) {
 
 export async function deleteVehicle (id) {
   try {
+    const token = getAccessToken()
     const res = await fetch(VEHICLE_ENDPOINT + id, {
       method: 'DELETE',
       headers: {
+        Authorization: `Bearer ${token}`,
         Accept: 'application/json',
         'Content-Type': 'application/json'
       }

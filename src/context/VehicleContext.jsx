@@ -1,6 +1,6 @@
 import { createContext, useReducer } from 'react'
 import { dataReducer } from '../reducers/dataReducer'
-import { deleteVehicle, newClientVehicle } from '../services/vehicleServices'
+import { CreateVehicle, deleteVehicle } from '../services/vehicleServices'
 
 const initialState = {
   vehicles: []
@@ -19,10 +19,11 @@ export const VehicleProvider = ({ children }) => {
   const addVehicle = async (newVehicle) => {
     dispatch({ type: 'ADD_ITEM', itemType: 'vehicles', item: newVehicle })
     try {
-      const modifyVehicle = await newClientVehicle(newVehicle)
+      const modifyVehicle = await CreateVehicle(newVehicle)
       dispatch({ type: 'UPDATE_ITEM', itemType: 'vehicles', item: newVehicle, modifyItem: modifyVehicle })
     } catch (error) {
       console.error('Error adding user:', error)
+      alert(error)
       dispatch({ type: 'DELETE_ITEM', itemType: 'vehicles', item: newVehicle })
     }
   }

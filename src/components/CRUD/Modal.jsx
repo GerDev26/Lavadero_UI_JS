@@ -6,7 +6,7 @@ import { UsersContext } from '../../context/UserContext'
 import { getFormFields, mapFields } from '../../helpers/formHelpers'
 import { VehicleContext } from '../../context/VehicleContext'
 
-export function Modal ({ callback, children }) {
+export function Modal ({ callback, nameOfModal, children }) {
   const { modal, setModal } = useContext(ModalContext)
 
   const handleClose = () => {
@@ -19,11 +19,11 @@ export function Modal ({ callback, children }) {
       <div className='absolute w-full h-full bg-black opacity-55' />
       <form onSubmit={callback} className='relative m-auto w-fit px-24 py-10 bg-white'>
         <button type='button' onClick={handleClose} className='transition duration-150 group w-8 h-6 absolute top-0 right-0 hover:bg-red-700'><XMarkIcon className='w-6 text-red-600 m-auto group-hover:text-white' /></button>
-        <h1 className='mb-2 uppercase text-3xl font-semibold'>Crear usuario</h1>
+        <h1 className='mb-2 uppercase text-3xl font-semibold'>{nameOfModal}</h1>
         <div className='grid grid-cols-2 grid-rows-3 w-fit gap-4'>
           {children}
         </div>
-        <button className='absolute bottom-2 right-2 uppercase bg-green-600 text-white p-2 rounded-md font-semibold'> Crear usuario </button>
+        <button className='absolute bottom-2 right-2 uppercase bg-green-600 text-white p-2 rounded-md font-semibold'> crear </button>
       </form>
     </div>
   )
@@ -50,7 +50,7 @@ export function UserModal () {
     }
   }
   return (
-    <Modal callback={handleSubmit}>
+    <Modal callback={handleSubmit} nameOfModal='Crear Usuario'>
       <InputEmail text='Email' />
       <InputPassword text='Contraseña' />
       <InputText text='Nombre' />
@@ -79,7 +79,7 @@ export function VehicleModal () {
     }
   }
   return (
-    <Modal callback={handleSubmit}>
+    <Modal callback={handleSubmit} nameOfModal='Crear vehiculo'>
       <InputText text='Dominio' />
       <InputText text='Tipo' />
     </Modal>
