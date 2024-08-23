@@ -1,6 +1,7 @@
 import { createContext, useReducer } from 'react'
 import { dataReducer } from '../reducers/dataReducer'
-import { CreateVehicle, deleteVehicle } from '../services/vehicleServices'
+import { CreateVehicle, deleteVehicle, updateVehicle } from '../services/vehicleServices'
+import { mapFields } from '../helpers/formHelpers'
 
 const initialState = {
   vehicles: []
@@ -10,7 +11,8 @@ export const VehicleContext = createContext({
   vehicles: initialState.vehicles,
   addVehicle: async () => {},
   setVehicles: async () => {},
-  removeVehicle: async () => {}
+  removeVehicle: async () => {},
+  modVehicle: async () => {}
 })
 
 export const VehicleProvider = ({ children }) => {
@@ -43,12 +45,25 @@ export const VehicleProvider = ({ children }) => {
     }
   }
 
-  /*   const updateUser = (selectedUser, modifyUser) => {
-    dispatch({ type: 'UPDATE_ITEM', itemType: 'users', item: selectedUser, modifyItem: modifyUser })
-  } */
+  const modVehicle = async (selectedVehicle, modifyVehicle) => {
+    const prevVehicleState = [...state.vehicles]
+    try {
+      const newVehicle = await updateVehicle(selectedVehicle.id, modifyVehicle)
+      const newStructure = {
+        id: 'id',
+        domain: 'vehicleDomain',
+        type_id: 'vehicleType'
+      }
+      const mappedVehicle = mapFields({ formFields: selectedVehicle, newStructure })
+      dispatch({ type: 'UPDATE_ITEM', itemType: 'vehicles', item: mappedVehicle, modifyItem: newVehicle })
+    } catch (error) {
+      console.error('Error updating vehicle:', error)
+      dispatch({ type: 'SET_ITEMS', itemType: 'vehicles', itemList: prevVehicleState })
+    }
+  }
 
   return (
-    <VehicleContext.Provider value={{ vehicles: state.vehicles, addVehicle, setVehicles, removeVehicle }}>
+    <VehicleContext.Provider value={{ vehicles: state.vehicles, addVehicle, setVehicles, removeVehicle, modVehicle }}>
       {children}
     </VehicleContext.Provider>
   )

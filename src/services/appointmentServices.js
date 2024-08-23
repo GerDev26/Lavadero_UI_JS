@@ -1,5 +1,5 @@
 import { getAccessToken } from '../helpers/tokenHelpers'
-import { APPOINTMENTS_RESERVE } from '../resources/myApi'
+import { APPOINTMENTS_ENDPOINT, APPOINTMENTS_RESERVE } from '../resources/myApi'
 
 export async function reserveAppointment (appointment) {
   try {
@@ -29,4 +29,24 @@ export async function reserveAppointment (appointment) {
     console.log(error)
     throw error
   }
+}
+
+export async function deleteAppointment (id) {
+  const token = getAccessToken()
+  console.log(id)
+  const res = await fetch(APPOINTMENTS_ENDPOINT + id, {
+    method: 'DELETE',
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    }
+  })
+  if (!res.ok) {
+    const error = await res.json()
+    throw error
+  }
+  const data = await res.json()
+  console.log(data)
+  return data
 }

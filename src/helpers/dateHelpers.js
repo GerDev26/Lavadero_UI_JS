@@ -1,18 +1,19 @@
 export function sevenDays () {
   const now = new Date()
-  const year = now.getFullYear()
-  const month = String(now.getMonth() + 1).padStart(2, '0')
-  const day = now.getDate()
-
   const dates = []
 
   for (let index = 0; index < 7; index++) {
-    const newDay = String(day + index).padStart(2, '0')
+    const futureDate = new Date()
+    futureDate.setDate(now.getDate() + index) // Añade los días al objeto Date actual
+
+    const day = String(futureDate.getDate()).padStart(2, '0')
+    const month = String(futureDate.getMonth() + 1).padStart(2, '0')
+    const year = futureDate.getFullYear()
 
     dates[index] = {
-      date: `${newDay}-${month}-${year}`,
-      formattedDate: `${newDay}/${month}`,
-      weekday: getWeekday(day + index).toUpperCase()
+      date: `${day}-${month}-${year}`,
+      formattedDate: `${day}/${month}`,
+      weekday: getWeekday(futureDate).toUpperCase()
     }
   }
   dates[0].weekday = 'HOY'
@@ -20,12 +21,7 @@ export function sevenDays () {
   return dates
 }
 
-export function getWeekday (day) {
-  const now = new Date()
-  const year = now.getFullYear()
-  const month = now.getMonth()
-
-  const date = new Date(year, month, day)
+export function getWeekday (date) {
   const options = { weekday: 'long' }
   const dayName = new Intl.DateTimeFormat('es-ES', options).format(date)
   return dayName

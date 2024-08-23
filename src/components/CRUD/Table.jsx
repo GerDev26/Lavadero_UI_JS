@@ -4,6 +4,9 @@ import { PencilIcon, TrashIcon } from '@heroicons/react/20/solid'
 import { UsersContext } from '../../context/UserContext'
 import { useUserVehicles } from '../../hooks/useVehicles'
 import { VehicleContext } from '../../context/VehicleContext'
+import { ModalContext } from '../../context/ModalContext'
+import { useUserAppointments } from '../../hooks/useAppointments'
+import { AppointmentContext } from '../../context/AppointmentContext'
 
 function TableCol ({ children, onClick }) {
   return <td onClick={onClick} className='p-3 uppercase font-bold'>{children}</td>
@@ -30,16 +33,18 @@ export function Table ({ cols, children }) {
 export function VehicleTable () {
   const userVehicles = useUserVehicles()
   const { setVehicles, vehicles, removeVehicle } = useContext(VehicleContext)
+  const { setUpdateModal, setUpdateValues } = useContext(ModalContext)
 
   useEffect(() => {
     setVehicles(userVehicles)
   }, [userVehicles])
-  console.log(vehicles)
+
   const handleDelete = async (vehicle) => {
     await removeVehicle(vehicle)
   }
-  const handleUpdate = () => {
-    console.log('borrar')
+  const handleUpdate = (selectedVehicle) => {
+    setUpdateValues(selectedVehicle)
+    setUpdateModal(true)
   }
 
   return (
@@ -50,11 +55,39 @@ export function VehicleTable () {
             <TableRow>{vehicle.vehicleDomain}</TableRow>
             <TableRow>{vehicle.vehicleType}</TableRow>
             <TableRow onClick={async () => await handleDelete(vehicle)}><TrashIcon className='m-auto w-6 cursor-pointer' /></TableRow>
-            <TableRow onClick={() => handleUpdate()}><PencilIcon className='m-auto w-6 cursor-pointer' /></TableRow>
+            <TableRow onClick={() => handleUpdate(vehicle)}><PencilIcon className='m-auto w-6 cursor-pointer' /></TableRow>
           </tr>
         ))
         : (
           <tr />
+          )}
+    </Table>
+  )
+}
+export function AppointmentTable () {
+  const { setAppointments, appointments, removeAppointment } = useContext(AppointmentContext)
+  const userAppointments = useUserAppointments()
+
+  useEffect(() => {
+    setAppointments(userAppointments)
+  }, [userAppointments])
+
+  return (
+    <Table cols={['fecha', 'hora', 'dominio', 'tipo', 'eliminar']}>
+      {(appointments.length > 0)
+        ? appointments.map(appointment => (
+          <tr key={appointment.id}>
+            <TableRow>{appointment.date}</TableRow>
+            <TableRow>{appointment.hour}</TableRow>
+            <TableRow>{appointment.vehicle.vehicleDomain}</TableRow>
+            <TableRow>{appointment.vehicle.vehicleType}</TableRow>
+            <TableRow onClick={async () => { await removeAppointment(appointment) }}><TrashIcon className='m-auto w-6 cursor-pointer' /></TableRow>
+          </tr>
+        ))
+        : (
+          <tr>
+            <td className='text-center p-4' colSpan={5}>No hay turnos disponibles</td>
+          </tr>
           )}
     </Table>
   )

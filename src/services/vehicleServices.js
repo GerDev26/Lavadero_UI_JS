@@ -51,3 +51,26 @@ export async function deleteVehicle (id) {
     throw error
   }
 }
+export async function updateVehicle (id, modifyVehicle) {
+  try {
+    const token = getAccessToken()
+    const res = await fetch(VEHICLE_ENDPOINT + id, {
+      method: 'PATCH',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(modifyVehicle)
+    })
+    if (!res.ok) {
+      const error = await res.json()
+      throw new Error(error)
+    }
+    const data = await res.json()
+    return data
+  } catch (error) {
+    console.log(error.errors)
+    throw error
+  }
+}

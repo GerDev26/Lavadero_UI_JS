@@ -26,14 +26,14 @@ export function AdminCrud () {
 }
 
 export function OpenModalBtn ({ text }) {
-  const { setModal } = useContext(ModalContext)
+  const { setCreateModal } = useContext(ModalContext)
 
   const handleOpenModal = () => {
-    setModal(true)
+    setCreateModal(true)
   }
 
   return (
-    <button onClick={handleOpenModal} className='p-2 text-white rounded-s bg-green-700 flex gap-2'>
+    <button onClick={handleOpenModal} className='p-2 my-2 text-white rounded-s bg-green-700 flex gap-2'>
       <p>{text}</p>
       <PlusCircleIcon className='w-6' />
     </button>

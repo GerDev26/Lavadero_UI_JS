@@ -17,8 +17,8 @@ export function Navbar () {
       <h1 className='text-4xl font-bold z-10'><Link to='/'>RFcarwash</Link></h1>
       <Menu menuState={menuState}>
         <SessionItemCheck>
-          {/* <Item text='Mis turnos' to='/TURNOS' /> */}
-          <Item text='Mis autos' to='/misvehiculos' />
+          <Item text='turnos' to='/misTurnos' />
+          <Item text='vehiculos' to='/misVehiculos' />
           <CloseSessionItem />
         </SessionItemCheck>
       </Menu>

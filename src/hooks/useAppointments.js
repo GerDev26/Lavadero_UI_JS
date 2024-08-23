@@ -1,5 +1,31 @@
 import { useEffect, useState } from 'react'
-import { APPOINTMENTS_DATES, APPOINTMENTS_ENDPOINT } from '../resources/myApi'
+import { APPOINTMENTS_DATES, APPOINTMENTS_ENDPOINT, USER_APPOINTMENTS } from '../resources/myApi'
+import { getAccessToken } from '../helpers/tokenHelpers'
+
+export function useUserAppointments () {
+  const [appointments, setAppointments] = useState([])
+  const token = getAccessToken()
+
+  useEffect(() => {
+    fetch(USER_APPOINTMENTS, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        setAppointments(data)
+      })
+      .catch(error => {
+        console.log(error)
+        throw error
+      })
+  }, [])
+
+  return appointments
+}
 
 export function useDates () {
   const [dates, setDates] = useState([])

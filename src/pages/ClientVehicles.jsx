@@ -1,4 +1,4 @@
-import { VehicleModal } from '../components/CRUD/Modal'
+import { CreateVehicleModal, UpdateVehicleModal } from '../components/CRUD/Modal'
 import { VehicleTable } from '../components/CRUD/Table'
 import { Footer } from '../components/Footer'
 import { Navbar } from '../components/Navbar'
@@ -12,8 +12,9 @@ export function ClientVehicles () {
       <ModalProvider>
         <Navbar />
         <VehicleProvider>
-          <VehicleModal />
-          <div className='m-auto w-fit'>
+          <CreateVehicleModal />
+          <UpdateVehicleModal />
+          <div className='m-auto my-8 w-fit'>
             <OpenModalBtn text='Añadir Vehiculo' />
             <VehicleTable />
           </div>
