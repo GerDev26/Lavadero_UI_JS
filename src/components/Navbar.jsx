@@ -1,6 +1,6 @@
 import { Bars3Icon } from '@heroicons/react/20/solid'
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { closeSession } from '../services/authService'
 import { getAccessToken, removeAccessToken } from '../helpers/tokenHelpers'
 
@@ -17,8 +17,8 @@ export function Navbar () {
       <h1 className='text-4xl font-bold z-10'><Link to='/'>RFcarwash</Link></h1>
       <Menu menuState={menuState}>
         <SessionItemCheck>
-          <Item text='turnos' to='/misTurnos' />
-          <Item text='vehiculos' to='/misVehiculos' />
+          <Item text='mis turnos' to='/misTurnos' />
+          <Item text='mis vehiculos' to='/misVehiculos' />
           <CloseSessionItem />
         </SessionItemCheck>
       </Menu>
@@ -63,23 +63,19 @@ function SessionItemCheck ({ children }) {
 
 function CloseSessionItem () {
   const token = getAccessToken()
+  const navigate = useNavigate()
 
-  const logout = async () => {
+  const handleClick = async () => {
     try {
       await closeSession({ token })
       removeAccessToken()
-      window.location.reload()
+      navigate('/')
     } catch (error) {
-      console.log(error)
+      alert(error)
     }
-  }
-  const handleClick = () => {
-    logout().catch((error) => {
-      console.log(error)
-    })
   }
 
   return (
-    <Item onClick={handleClick} to='/' text='Cerrar sesion' />
+    <Item onClick={handleClick} text='Cerrar sesion' />
   )
 }

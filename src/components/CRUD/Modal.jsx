@@ -1,11 +1,13 @@
 import { XMarkIcon } from '@heroicons/react/20/solid'
-import { DomainBigInput, InputEmail, InputPassword, InputText, VehicleTypeDropDown } from '../Input'
+import { InputDomain, InputEmail, InputPassword, InputText, VehicleTypeDropDown } from '../Input'
 import { useContext } from 'react'
 import { ModalContext } from '../../context/ModalContext'
 import { UsersContext } from '../../context/UserContext'
 import { getFormFields, mapFields } from '../../helpers/formHelpers'
 import { VehicleContext } from '../../context/VehicleContext'
 import { getTypeIdByDescription } from '../../helpers/vehicleHelper'
+import { InputContext } from '../../context/InputContext'
+import { GreenSubmitButton } from '../Buttons'
 
 export function CreateModal ({ callback, nameOfModal, children }) {
   const { createModal, setCreateModal } = useContext(ModalContext)
@@ -24,7 +26,7 @@ export function CreateModal ({ callback, nameOfModal, children }) {
         <div className='grid grid-cols-2 grid-rows-3 w-fit gap-4'>
           {children}
         </div>
-        <button className='absolute bottom-2 right-2 uppercase bg-green-600 text-white p-2 rounded-md font-semibold'> crear </button>
+        <GreenSubmitButton text='Crear' />
       </form>
     </div>
   )
@@ -46,7 +48,7 @@ export function UpdateModal ({ callback, nameOfModal, children }) {
         <div className='grid grid-cols-2 grid-rows-3 w-fit gap-4'>
           {children}
         </div>
-        <button className='absolute bottom-2 right-2 uppercase bg-green-600 text-white p-2 rounded-md font-semibold'> Actualizar </button>
+        <GreenSubmitButton text='Actualizar' />
       </form>
     </div>
   )
@@ -86,6 +88,7 @@ export function UserModal () {
 export function CreateVehicleModal () {
   const { setCreateModal } = useContext(ModalContext)
   const { addVehicle } = useContext(VehicleContext)
+  const { fields } = useContext(InputContext)
 
   const newStructure = {
     Dominio: 'vehicleDomain',
@@ -93,8 +96,9 @@ export function CreateVehicleModal () {
   }
 
   const handleSubmit = async (formEvent) => {
-    const formFields = getFormFields({ formEvent })
-    const newVehicle = mapFields({ formFields, newStructure })
+    setCreateModal(false)
+    formEvent.preventDefault()
+    const newVehicle = mapFields({ formFields: fields, newStructure })
     newVehicle.vehicleType = getTypeIdByDescription(newVehicle.vehicleType)
     try {
       await addVehicle(newVehicle)
@@ -105,7 +109,7 @@ export function CreateVehicleModal () {
   }
   return (
     <CreateModal callback={handleSubmit} nameOfModal='Crear vehiculo'>
-      <DomainBigInput />
+      <InputDomain />
       <VehicleTypeDropDown />
     </CreateModal>
   )
@@ -113,27 +117,30 @@ export function CreateVehicleModal () {
 export function UpdateVehicleModal () {
   const { modVehicle } = useContext(VehicleContext)
   const { updateValues, setUpdateModal } = useContext(ModalContext)
+  const { fields } = useContext(InputContext)
 
   const newStructure = {
     Dominio: 'vehicleDomain',
     Tipo: 'vehicleType'
   }
+
   const handleSubmit = async (formEvent) => {
-    const formFields = getFormFields({ formEvent })
-    const modifyVehicle = mapFields({ formFields, newStructure })
+    formEvent.preventDefault()
+    console.log(fields)
+    const modifyVehicle = mapFields({ formFields: fields, newStructure })
     modifyVehicle.vehicleType = getTypeIdByDescription(modifyVehicle.vehicleType)
     console.log(modifyVehicle.vehicleDomain.length)
     console.log(updateValues)
+    setUpdateModal(false)
     try {
       await modVehicle(updateValues, modifyVehicle)
-      setUpdateModal(false)
     } catch {
       console.log('error')
     }
   }
   return (
     <UpdateModal callback={handleSubmit} nameOfModal='Modificar vehiculo'>
-      <DomainBigInput initialValue={updateValues.vehicleDomain} />
+      <InputDomain initialValue={updateValues.vehicleDomain} />
       <VehicleTypeDropDown initialValue={updateValues.vehicleType} />
     </UpdateModal>
   )

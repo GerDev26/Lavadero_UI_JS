@@ -1,5 +1,5 @@
 import './App.css'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, useLocation } from 'react-router-dom'
 import { Home } from './pages/Home'
 import { AdminCrud } from './pages/AdminCrud'
 import { Login } from './pages/Login'
@@ -9,9 +9,12 @@ import { SendPassword } from './pages/SendPassword'
 import { AppointmentReserve } from './pages/AppointmentReserve'
 import { ClientVehicles } from './pages/ClientVehicles'
 import { ClientAppointments } from './pages/ClientAppointments'
+import { useEffect } from 'react'
+
 export default function App () {
   return (
     <>
+      <ScrollToTop />
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/CRUD' element={<AdminCrud />} />
@@ -25,4 +28,13 @@ export default function App () {
       </Routes>
     </>
   )
+}
+function ScrollToTop () {
+  const { pathname } = useLocation()
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pathname])
+
+  return null // No renderiza nada en el DOM
 }
