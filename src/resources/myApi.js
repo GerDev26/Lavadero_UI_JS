@@ -12,6 +12,7 @@ export const APPOINTMENTS_RESERVE = API_URL + '/appointments/reserve'
 export const USERS_ENDPOINT = API_URL + '/users/'
 export const USER_VEHICLES = API_URL + '/users/vehicles/'
 export const USER_NEW_VEHICLE = API_URL + '/users/newVehicle/'
+export const USER_ROLE = API_URL + '/users/role'
 export const USER_APPOINTMENTS = USERS_ENDPOINT + 'appointments'
 
 export const SERVICE_ENDPOINT = API_URL + '/services/'

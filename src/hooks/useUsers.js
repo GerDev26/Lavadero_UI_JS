@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import { USERS_ENDPOINT } from '../resources/myApi'
+import { USER_ROLE, USERS_ENDPOINT } from '../resources/myApi'
+import { getAccessToken } from '../helpers/tokenHelpers'
 
 export function useAllUsers () {
   const [users, setUsers] = useState([])
@@ -16,4 +17,32 @@ export function useAllUsers () {
   }, [])
 
   return users
+}
+
+export function useCheckUserRole () {
+  const [role, setRole] = useState('')
+
+  useEffect(() => {
+    const token = getAccessToken()
+    if (token) {
+      fetch(USER_ROLE, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(data => data.json())
+        .then(res => {
+          setRole(res.role)
+        })
+        .catch(() => {
+          setRole('cliente')
+        })
+    } else {
+      setRole('cliente')
+    }
+  }, [])
+  return role
 }

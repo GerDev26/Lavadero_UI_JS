@@ -1,4 +1,5 @@
-import { USERS_ENDPOINT } from '../resources/myApi'
+import { getAccessToken } from '../helpers/tokenHelpers'
+import { USER_ROLE, USERS_ENDPOINT } from '../resources/myApi'
 
 export async function DeleteUser (id) {
   try {
@@ -39,6 +40,28 @@ export async function CreateUser (user) {
     return data
   } catch (error) {
     console.error(error)
+    throw error
+  }
+}
+export async function checkRole () {
+  try {
+    const token = getAccessToken()
+    const res = await fetch(USER_ROLE, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      }
+    })
+    if (!res.ok) {
+      const error = await res.json()
+      throw new Error(error)
+    }
+    const data = await res.json()
+    return data
+  } catch (error) {
+    console.log(error.errors)
     throw error
   }
 }

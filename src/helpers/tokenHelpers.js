@@ -3,7 +3,7 @@ export function getAccessToken () {
   if (token !== null) {
     return token
   }
-  throw new Error('No existe un token de acceso activo')
+  console.log('No existe un token de acceso activo')
 }
 
 export function setAccessToken ({ token }) {

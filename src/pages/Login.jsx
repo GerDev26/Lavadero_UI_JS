@@ -41,8 +41,8 @@ function Form () {
     const mappedFields = mapFields({ formFields: fields, newStructure })
     setInvalidForm(true)
     try {
-      const token = await startSession({ user: mappedFields })
-      setAccessToken({ token })
+      const res = await startSession({ user: mappedFields })
+      setAccessToken({ token: res.accessToken })
       navigate('/')
     } catch (error) {
       // eslint-disable-next-line no-undef

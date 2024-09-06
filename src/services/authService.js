@@ -40,7 +40,7 @@ export async function startSession ({ user }) {
     }
 
     const data = await res.json()
-    return data.accessToken
+    return data
   } catch (error) {
     console.log(error)
     throw error

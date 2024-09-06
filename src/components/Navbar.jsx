@@ -53,11 +53,11 @@ function Item ({ text, to, onClick }) {
   )
 }
 function SessionItemCheck ({ children }) {
-  try {
-    getAccessToken()
-    return <>{children}</>
-  } catch (error) {
+  const token = getAccessToken()
+  if (!token) {
     return <Item text='Iniciar Sesión' to='/login' />
+  } else {
+    return <>{children}</>
   }
 }
 
@@ -70,6 +70,7 @@ function CloseSessionItem () {
       await closeSession({ token })
       removeAccessToken()
       navigate('/')
+      window.location.reload()
     } catch (error) {
       alert(error)
     }

@@ -1,17 +1,21 @@
-import { Footer } from '../components/Footer'
-import { Navbar } from '../components/Navbar'
-import { Banner } from '../components/Presentation'
-import { Separator } from '../components/Separator'
-import { Services } from '../components/Home/Services'
+import { useCheckUserRole } from '../hooks/useUsers'
+import { ClientHome } from './ClientHome'
+import { AdminHome } from './AdminHome'
+import { EmployHome } from './EmployHome'
 
 export function Home () {
-  return (
-    <div className='flex flex-col gap-4'>
-      <Navbar />
-      <Banner />
-      <Separator title='Nuestros servicios' description='Te ofrecemos servicios de la mejor calidad' />
-      <Services />
-      <Footer />
-    </div>
-  )
+  const role = useCheckUserRole()
+
+  console.log(role)
+  switch (role) {
+    case 'administrador':
+      return <AdminHome />
+    case 'empleado':
+      return <EmployHome />
+    case 'cliente':
+      return <ClientHome />
+
+    default:
+      return <h1>Cargando...</h1>
+  }
 }
