@@ -20,6 +20,11 @@ export const InputContextProvider = ({ children }) => {
     })
   }, [fieldValidationStatus])
 
+  const clearFields = () => {
+    setFields({})
+    setFieldValidationStatus({})
+  }
+
   const validateField = (field, booleanValue) => {
     setFieldValidationStatus((prevValidations) => ({
       ...prevValidations,
@@ -34,7 +39,7 @@ export const InputContextProvider = ({ children }) => {
   }
 
   return (
-    <InputContext.Provider value={{ fields, addField, fieldValidationStatus, validateField, invalidForm, setInvalidForm }}>
+    <InputContext.Provider value={{ fields, addField, fieldValidationStatus, validateField, invalidForm, setInvalidForm, clearFields }}>
       {children}
     </InputContext.Provider>
   )

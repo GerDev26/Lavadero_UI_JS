@@ -2,6 +2,7 @@ import { useCheckUserRole } from '../hooks/useUsers'
 import { ClientHome } from './ClientHome'
 import { AdminHome } from './AdminHome'
 import { EmployHome } from './EmployHome'
+import { SimpleLoader } from '../components/SimpleLoader'
 
 export function Home () {
   const role = useCheckUserRole()
@@ -16,6 +17,10 @@ export function Home () {
       return <ClientHome />
 
     default:
-      return <h1>Cargando...</h1>
+      return (
+        <main className='w-full h-screen flex justify-center items-center'>
+          <SimpleLoader />
+        </main>
+      )
   }
 }

@@ -32,10 +32,11 @@ export function CreateModal ({ callback, nameOfModal, children }) {
   )
 }
 export function UpdateModal ({ callback, nameOfModal, children }) {
-  const { updateModal, setUpdateModal } = useContext(ModalContext)
+  const { updateModal, setUpdateModal, setUpdateValues } = useContext(ModalContext)
 
   const handleClose = () => {
     setUpdateModal(false)
+    setUpdateValues({})
   }
 
   const className = updateModal ? 'flex' : 'hidden'
@@ -116,7 +117,7 @@ export function CreateVehicleModal () {
 }
 export function UpdateVehicleModal () {
   const { modVehicle } = useContext(VehicleContext)
-  const { updateValues, setUpdateModal } = useContext(ModalContext)
+  const { updateValues, setUpdateModal, setUpdateValues } = useContext(ModalContext)
   const { fields } = useContext(InputContext)
 
   const newStructure = {
@@ -129,7 +130,6 @@ export function UpdateVehicleModal () {
     console.log(fields)
     const modifyVehicle = mapFields({ formFields: fields, newStructure })
     modifyVehicle.vehicleType = getTypeIdByDescription(modifyVehicle.vehicleType)
-    console.log(modifyVehicle.vehicleDomain.length)
     console.log(updateValues)
     setUpdateModal(false)
     try {
@@ -137,6 +137,7 @@ export function UpdateVehicleModal () {
     } catch {
       console.log('error')
     }
+    setUpdateValues({})
   }
   return (
     <UpdateModal callback={handleSubmit} nameOfModal='Modificar vehiculo'>
