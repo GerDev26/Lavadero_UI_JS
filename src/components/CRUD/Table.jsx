@@ -1,6 +1,6 @@
 import { useAllUsers } from '../../hooks/useUsers'
 import { useContext, useEffect } from 'react'
-import { PencilIcon, TrashIcon } from '@heroicons/react/20/solid'
+import { CheckCircleIcon, PencilIcon, TrashIcon, XCircleIcon } from '@heroicons/react/20/solid'
 import { UsersContext } from '../../context/UserContext'
 import { useUserVehicles } from '../../hooks/useVehicles'
 import { VehicleContext } from '../../context/VehicleContext'
@@ -9,10 +9,10 @@ import { useUserAppointments } from '../../hooks/useAppointments'
 import { AppointmentContext } from '../../context/AppointmentContext'
 
 function TableCol ({ children, onClick }) {
-  return <td onClick={onClick} className='p-3 uppercase font-bold'>{children}</td>
+  return <td onClick={onClick} className='cursor-default p-3 uppercase font-bold'>{children}</td>
 }
 function TableRow ({ children, onClick }) {
-  return <th onClick={onClick} className='p-3 font-normal border-b-2 border-gray-400'>{children}</th>
+  return <th onClick={onClick} className='cursor-default p-3 font-normal border-b-2 border-gray-400'>{children}</th>
 }
 
 export function Table ({ cols, children }) {
@@ -54,8 +54,8 @@ export function VehicleTable () {
           <tr key={vehicle.id}>
             <TableRow>{vehicle.vehicleDomain}</TableRow>
             <TableRow>{vehicle.vehicleType}</TableRow>
-            <TableRow onClick={async () => await handleDelete(vehicle)}><TrashIcon className='m-auto w-6 cursor-pointer' /></TableRow>
-            <TableRow onClick={() => handleUpdate(vehicle)}><PencilIcon className='m-auto w-6 cursor-pointer' /></TableRow>
+            <TableRow onClick={async () => await handleDelete(vehicle)}><TrashIcon className='text-red-700 drop-shadow-lg hover:scale-105 active:scale-95 m-auto w-6 cursor-pointer' /></TableRow>
+            <TableRow onClick={() => handleUpdate(vehicle)}><PencilIcon className='text-yellow-500 drop-shadow-lg hover:scale-105 active:scale-95 m-auto w-6 cursor-pointer' /></TableRow>
           </tr>
         ))
         : (
@@ -65,7 +65,7 @@ export function VehicleTable () {
   )
 }
 export function AppointmentTable () {
-  const { setAppointments, appointments, removeAppointment } = useContext(AppointmentContext)
+  const { setAppointments, reservedAppointments, releaseReservedAppointment } = useContext(AppointmentContext)
   const userAppointments = useUserAppointments()
 
   useEffect(() => {
@@ -74,14 +74,59 @@ export function AppointmentTable () {
 
   return (
     <Table cols={['fecha', 'hora', 'dominio', 'tipo', 'eliminar']}>
-      {(appointments.length > 0)
-        ? appointments.map(appointment => (
+      {(reservedAppointments.length > 0)
+        ? reservedAppointments.map(appointment => (
           <tr key={appointment.id}>
             <TableRow>{appointment.date}</TableRow>
             <TableRow>{appointment.hour}</TableRow>
             <TableRow>{appointment.vehicle.vehicleDomain}</TableRow>
             <TableRow>{appointment.vehicle.vehicleType}</TableRow>
-            <TableRow onClick={async () => { await removeAppointment(appointment) }}><TrashIcon className='m-auto w-6 cursor-pointer' /></TableRow>
+            <TableRow onClick={async () => { await releaseReservedAppointment(appointment) }}><TrashIcon className='text-red-700 drop-shadow-lg hover:scale-105 active:scale-95 m-auto w-6 cursor-pointer' /></TableRow>
+          </tr>
+        ))
+        : (
+          <tr>
+            <td className='text-center p-4' colSpan={5}>No hay turnos disponibles</td>
+          </tr>
+          )}
+    </Table>
+  )
+}
+
+export function EmployCompleteAppointmentTable () {
+  const { completedAppointments, releaseReservedAppointment } = useContext(AppointmentContext)
+  return (
+    <Table cols={['fecha', 'hora', 'usuario', 'dominio', 'deshacer']}>
+      {(completedAppointments.length > 0)
+        ? completedAppointments.map(appointment => (
+          <tr key={appointment.id}>
+            <TableRow>{appointment.date}</TableRow>
+            <TableRow>{appointment.hour}</TableRow>
+            <TableRow>{appointment.user.name}</TableRow>
+            <TableRow>{appointment.vehicle.vehicleDomain}</TableRow>
+            <TableRow onClick={async () => { await releaseReservedAppointment(appointment) }}><XCircleIcon className='text-red-700 drop-shadow-lg hover:scale-105 active:scale-95 m-auto w-6 cursor-pointer' /></TableRow>
+          </tr>
+        ))
+        : (
+          <tr>
+            <td className='text-center p-4' colSpan={5}>No hay turnos disponibles</td>
+          </tr>
+          )}
+    </Table>
+  )
+}
+export function EmployReserveAppointmentTable () {
+  const { reservedAppointments, completeReservedAppointment } = useContext(AppointmentContext)
+  return (
+    <Table cols={['fecha', 'hora', 'usuario', 'dominio', 'completar']}>
+      {(reservedAppointments.length > 0)
+        ? reservedAppointments.map(appointment => (
+          <tr key={appointment.id}>
+            <TableRow>{appointment.date}</TableRow>
+            <TableRow>{appointment.hour}</TableRow>
+            <TableRow>{appointment.user.name}</TableRow>
+            <TableRow>{appointment.vehicle.vehicleDomain}</TableRow>
+            <TableRow onClick={() => completeReservedAppointment(appointment)}><CheckCircleIcon className='text-green-600 drop-shadow-lg hover:scale-105 active:scale-95 m-auto w-6 cursor-pointer' /></TableRow>
           </tr>
         ))
         : (
@@ -97,7 +142,7 @@ export function UserTable () {
   const { users, setUsers, deleteUser, updateUser } = useContext(UsersContext)
 
   useEffect(() => {
-    setUsers(allUsers)
+    setUsers(allUsers || [])
   }, [allUsers])
 
   const handleDelete = async (selectedUser) => {

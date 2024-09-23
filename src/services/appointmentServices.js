@@ -1,5 +1,5 @@
 import { getAccessToken } from '../helpers/tokenHelpers'
-import { APPOINTMENTS_ENDPOINT, APPOINTMENTS_RESERVE } from '../resources/myApi'
+import { APPOINTMENTS_COMPLETE, APPOINTMENTS_ENDPOINT, APPOINTMENTS_RELEASE, APPOINTMENTS_RESERVE } from '../resources/myApi'
 
 export async function reserveAppointment (appointment) {
   try {
@@ -33,7 +33,6 @@ export async function reserveAppointment (appointment) {
 
 export async function deleteAppointment (id) {
   const token = getAccessToken()
-  console.log(id)
   const res = await fetch(APPOINTMENTS_ENDPOINT + id, {
     method: 'DELETE',
     headers: {
@@ -44,6 +43,44 @@ export async function deleteAppointment (id) {
   })
   if (!res.ok) {
     const error = await res.json()
+    throw error
+  }
+  const data = await res.json()
+  console.log(data)
+  return data
+}
+export async function releaseAppointment (id) {
+  const token = getAccessToken()
+  const res = await fetch(APPOINTMENTS_RELEASE + id, {
+    method: 'PATCH',
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    }
+  })
+  if (!res.ok) {
+    const error = await res.json()
+    console.log('hola')
+    throw error
+  }
+  const data = await res.json()
+  console.log(data)
+  return data
+}
+export async function completeAppointment (id) {
+  const token = getAccessToken()
+  const res = await fetch(APPOINTMENTS_COMPLETE + id, {
+    method: 'PATCH',
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    }
+  })
+  if (!res.ok) {
+    const error = await res.json()
+    console.log('hola')
     throw error
   }
   const data = await res.json()

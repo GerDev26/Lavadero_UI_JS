@@ -31,7 +31,6 @@ function ReserveForm () {
   }, [])
 
   const handlesubmit = async () => {
-    console.log(values)
     await reserveAppointment(values)
     navigate('/')
   }

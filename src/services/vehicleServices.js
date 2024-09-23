@@ -1,7 +1,10 @@
 import { getAccessToken } from '../helpers/tokenHelpers'
+import { getTypeIdByDescription } from '../helpers/vehicleHelper'
 import { VEHICLE_ENDPOINT } from '../resources/myApi'
 
 export async function CreateVehicle (vehicle) {
+  vehicle.vehicleType = getTypeIdByDescription(vehicle.vehicleType)
+
   try {
     const token = getAccessToken()
     const res = await fetch(VEHICLE_ENDPOINT, {
@@ -52,6 +55,7 @@ export async function deleteVehicle (id) {
   }
 }
 export async function updateVehicle (id, modifyVehicle) {
+  modifyVehicle.vehicleType = getTypeIdByDescription(modifyVehicle.vehicleType)
   try {
     const token = getAccessToken()
     const res = await fetch(VEHICLE_ENDPOINT + id, {

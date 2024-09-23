@@ -20,6 +20,7 @@ export function useUserVehicles () {
         setVehicles(data)
       })
       .catch(error => {
+        setVehicles([])
         console.error('Error fetching vehicles:', error)
       })
   }, [])

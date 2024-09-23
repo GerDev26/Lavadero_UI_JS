@@ -60,3 +60,20 @@ export function useAppointmentHour (date = '01-01-2024') {
 
   return appointments
 }
+
+export function useAppointments () {
+  const [appointments, setAppointments] = useState()
+
+  useEffect(() => {
+    fetch(APPOINTMENTS_ENDPOINT)
+      .then(res => res.json())
+      .then(data => {
+        setAppointments(data.data)
+      })
+      .catch(error => {
+        throw error
+      })
+  }, [])
+
+  return appointments
+}

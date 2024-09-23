@@ -24,8 +24,7 @@ export const VehicleProvider = ({ children }) => {
       const modifyVehicle = await CreateVehicle(newVehicle)
       dispatch({ type: 'UPDATE_ITEM', itemType: 'vehicles', item: newVehicle, modifyItem: modifyVehicle })
     } catch (error) {
-      console.error('Error adding user:', error)
-      alert(error)
+      console.log(error)
       dispatch({ type: 'DELETE_ITEM', itemType: 'vehicles', item: newVehicle })
     }
   }

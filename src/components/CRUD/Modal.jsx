@@ -5,15 +5,16 @@ import { ModalContext } from '../../context/ModalContext'
 import { UsersContext } from '../../context/UserContext'
 import { getFormFields, mapFields } from '../../helpers/formHelpers'
 import { VehicleContext } from '../../context/VehicleContext'
-import { getTypeIdByDescription } from '../../helpers/vehicleHelper'
 import { InputContext } from '../../context/InputContext'
 import { GreenSubmitButton } from '../Buttons'
 
 export function CreateModal ({ callback, nameOfModal, children }) {
   const { createModal, setCreateModal } = useContext(ModalContext)
+  const { clearFields } = useContext(InputContext)
 
   const handleClose = () => {
     setCreateModal(false)
+    clearFields()
   }
 
   const className = createModal ? 'flex' : 'hidden'
@@ -91,19 +92,11 @@ export function CreateVehicleModal () {
   const { addVehicle } = useContext(VehicleContext)
   const { fields } = useContext(InputContext)
 
-  const newStructure = {
-    Dominio: 'vehicleDomain',
-    Tipo: 'vehicleType'
-  }
-
   const handleSubmit = async (formEvent) => {
     setCreateModal(false)
     formEvent.preventDefault()
-    const newVehicle = mapFields({ formFields: fields, newStructure })
-    newVehicle.vehicleType = getTypeIdByDescription(newVehicle.vehicleType)
     try {
-      await addVehicle(newVehicle)
-      setCreateModal(false)
+      await addVehicle(fields)
     } catch {
       console.log('error')
     }
@@ -120,20 +113,11 @@ export function UpdateVehicleModal () {
   const { updateValues, setUpdateModal, setUpdateValues } = useContext(ModalContext)
   const { fields } = useContext(InputContext)
 
-  const newStructure = {
-    Dominio: 'vehicleDomain',
-    Tipo: 'vehicleType'
-  }
-
   const handleSubmit = async (formEvent) => {
     formEvent.preventDefault()
-    console.log(fields)
-    const modifyVehicle = mapFields({ formFields: fields, newStructure })
-    modifyVehicle.vehicleType = getTypeIdByDescription(modifyVehicle.vehicleType)
-    console.log(updateValues)
     setUpdateModal(false)
     try {
-      await modVehicle(updateValues, modifyVehicle)
+      await modVehicle(updateValues, fields)
     } catch {
       console.log('error')
     }
@@ -144,5 +128,26 @@ export function UpdateVehicleModal () {
       <InputDomain initialValue={updateValues.vehicleDomain} />
       <VehicleTypeDropDown initialValue={updateValues.vehicleType} />
     </UpdateModal>
+  )
+}
+export function CreateAppointmentModal () {
+  const { setCreateModal } = useContext(ModalContext)
+  const { addVehicle } = useContext(VehicleContext)
+  const { fields } = useContext(InputContext)
+
+  const handleSubmit = async (formEvent) => {
+    setCreateModal(false)
+    formEvent.preventDefault()
+    try {
+      await addVehicle(fields)
+    } catch {
+      console.log('error')
+    }
+  }
+  return (
+    <CreateModal callback={handleSubmit} nameOfModal='Crear vehiculo'>
+      <InputDomain />
+      <VehicleTypeDropDown />
+    </CreateModal>
   )
 }

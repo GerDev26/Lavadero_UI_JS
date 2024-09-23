@@ -7,7 +7,6 @@ import { SimpleLoader } from '../components/SimpleLoader'
 export function Home () {
   const role = useCheckUserRole()
 
-  console.log(role)
   switch (role) {
     case 'administrador':
       return <AdminHome />

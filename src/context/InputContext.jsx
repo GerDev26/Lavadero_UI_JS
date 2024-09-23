@@ -2,7 +2,8 @@ import { createContext, useEffect, useState } from 'react'
 
 export const InputContext = createContext({
   fields: {},
-  fieldValidationStatus: {}
+  fieldValidationStatus: {},
+  clearFields: () => {}
 })
 
 export const InputContextProvider = ({ children }) => {

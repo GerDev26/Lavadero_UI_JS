@@ -80,7 +80,7 @@ export function InputNumber () {
   )
 }
 export function InputDomain ({ initialValue }) {
-  const labelText = 'Dominio'
+  const name = 'vehicleDomain'
   const { validateField } = useContext(InputContext)
   const [message, setMessage] = useState('')
 
@@ -96,29 +96,29 @@ export function InputDomain ({ initialValue }) {
   const validateInput = (value) => {
     if (value.length === 0) {
       setMessage('El campo esta vacio')
-      validateField(labelText, false)
+      validateField(name, false)
     } else if (value.includes(' ')) {
       setMessage('No puede incluir espacios')
-      validateField(labelText, false)
+      validateField(name, false)
     } else if (value.length < 6) {
       setMessage('Debe incluir almenos 6 caracteres')
-      validateField(labelText, false)
+      validateField(name, false)
     } else if (value.length > 7) {
       setMessage('Como maximo se admiten 7 caracteres')
-      validateField(labelText, false)
+      validateField(name, false)
     } else if (!tieneDosLetras(value)) {
       setMessage('Debe tener como minimo 2 letras')
-      validateField(labelText, false)
+      validateField(name, false)
     } else if (!tieneDosNumeros(value)) {
       setMessage('Debe tener como minimo 2 numeros')
-      validateField(labelText, false)
+      validateField(name, false)
     } else {
       setMessage('¡Correcto!')
-      validateField(labelText, true)
+      validateField(name, true)
     }
   }
   return (
-    <Input labelText={labelText} errorMessage={message} validateInput={validateInput} initialValue={initialValue} />
+    <Input labelText='Dominio' errorMessage={message} validateInput={validateInput} initialValue={initialValue} name={name} />
   )
 }
 
@@ -182,51 +182,28 @@ export function BigInput ({ labelText, errorMessage, inputProps, callback = () =
   )
 }
 
-export function DomainBigInput ({ initialValue }) {
-  const [message, setMessage] = useState('')
-  const [isOk, setIsOK] = useState()
-
-  const handleChange = (text) => {
-    if (text.length > 7) {
-      setMessage('Debe ser menor a 7')
-      setIsOK(false)
-    } else if (text.length < 7) {
-      setMessage('Debe ser mayor a 7')
-      setIsOK(false)
-    } else {
-      setMessage('')
-      setIsOK(true)
-    }
-  }
-
-  return (
-    <BigInput inputProps={{ minLength: 7, maxLength: 7 }} initialValue={initialValue} labelText='Dominio' errorMessage={message} callback={handleChange} isOk={isOk} />
-  )
-}
-
 export function VehicleTypeDropDown ({ initialValue = '' }) {
+  const name = 'vehicleType'
   const vehiclesTypes = useAllTypeOfVehicles()
   const { fields, addField, validateField } = useContext(InputContext)
   const [dropdown, setDropdown] = useState(false)
-
-  const fieldName = 'Tipo'
 
   const handleClick = () => {
     setDropdown(!dropdown)
   }
   const handleSelect = (option) => {
-    addField(fieldName, option)
-    validateField(fieldName, true)
+    addField(name, option)
+    validateField(name, true)
     setDropdown(!dropdown)
   }
 
   useEffect(() => {
     if (initialValue !== '') {
-      validateField(fieldName, true)
-      addField(fieldName, initialValue)
+      validateField(name, true)
+      addField(name, initialValue)
     } else {
-      validateField(fieldName, false)
-      addField(fieldName, '')
+      validateField(name, false)
+      addField(name, '')
     }
   }, [initialValue])
 
@@ -234,13 +211,13 @@ export function VehicleTypeDropDown ({ initialValue = '' }) {
   const inputStyle = dropdown ? 'bg-gray-300' : 'bg-gray-200'
   const ArrowStyle = dropdown ? 'text-gray-500' : 'text-gray-400'
 
-  const value = fields[fieldName] ? fields[fieldName] : ''
+  const value = fields[name] ? fields[name] : ''
 
   return (
     <div className='relative'>
       <span className='text-lg text-gray-950 font-semibold capitalize'>Tipo</span>
       <div onClick={handleClick} className='relative flex gap-2 w-60 justify-center items-center'>
-        <input name='Tipo' className={'w-full p-2 border-b-4 border-gray-400 rounded-sm cursor-pointer uppercase ' + inputStyle} type='text' value={value} readOnly />
+        <input name={name} className={'w-full p-2 border-b-4 border-gray-400 rounded-sm cursor-pointer uppercase ' + inputStyle} type='text' value={value} readOnly />
         <button className='w-fit h-fit absolute right-2 top-1' type='button'>
           <ArrowDownCircleIcon className={'w-8 h-8 ' + ArrowStyle} />
         </button>
@@ -253,25 +230,23 @@ export function VehicleTypeDropDown ({ initialValue = '' }) {
     </div>
   )
 }
-function Input ({ labelText, errorMessage, validateInput, initialValue = '', type = 'text' }) {
+function Input ({ labelText, errorMessage, validateInput, initialValue = '', type = 'text', name = labelText }) {
   const input = useRef()
   const { fieldValidationStatus, addField, fields, validateField } = useContext(InputContext)
   const [inputStyle, setInputStyle] = useState()
   const [messageStyle, setMessageStyle] = useState()
-  const [inputText, setInputText] = useState(initialValue)
 
   useEffect(() => {
     if (initialValue !== '') {
-      validateField(labelText, true)
-      addField(labelText, inputText)
+      validateField(name, true)
+      addField(name, initialValue)
     } else {
-      validateField(labelText, false)
-      setInputText(initialValue || '')
+      validateField(name, false)
     }
   }, [initialValue])
 
   useEffect(() => { // cambia los estilos dependiendo si el input es valido o no
-    switch (fieldValidationStatus[labelText]) {
+    switch (fieldValidationStatus[name]) {
       case true:
         setInputStyle('border-b-green-700')
         setMessageStyle('text-green-700')
@@ -283,19 +258,14 @@ function Input ({ labelText, errorMessage, validateInput, initialValue = '', typ
 
       default:
         setInputStyle('border-b-gray-400')
-        setMessageStyle('text-gray-400')
+        setMessageStyle('text-gray-400 opacity-0')
         break
     }
-  }, [fields[labelText]])
-
-  useEffect(() => {
-    setInputText(initialValue || '')
-  }, [initialValue])
+  }, [fields[name]])
 
   const handleChange = () => {
     const value = input.current.value
-    setInputText(value)
-    addField(labelText, value)
+    addField(name, value)
     validateInput(value)
   }
 
@@ -306,7 +276,7 @@ function Input ({ labelText, errorMessage, validateInput, initialValue = '', typ
         autoComplete='off'
         onChange={handleChange}
         ref={input}
-        value={inputText}
+        value={fields[name] || ''}
         className={
             'w-full p-2 bg-gray-200 focus:bg-gray-300 border-b-4 border-gray rounded-sm ' + inputStyle
         }

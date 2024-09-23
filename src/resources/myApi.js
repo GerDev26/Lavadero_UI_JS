@@ -8,6 +8,8 @@ export const API_URL = API.local
 export const APPOINTMENTS_ENDPOINT = API_URL + '/appointments/'
 export const APPOINTMENTS_DATES = API_URL + '/dates/'
 export const APPOINTMENTS_RESERVE = API_URL + '/appointments/reserve'
+export const APPOINTMENTS_RELEASE = API_URL + '/appointments/release/'
+export const APPOINTMENTS_COMPLETE = API_URL + '/appointments/complete/'
 
 export const USERS_ENDPOINT = API_URL + '/users/'
 export const USER_VEHICLES = API_URL + '/users/vehicles/'
