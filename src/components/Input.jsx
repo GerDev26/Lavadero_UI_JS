@@ -1,7 +1,10 @@
-import { ArrowDownCircleIcon } from '@heroicons/react/20/solid'
+import { ArrowDownCircleIcon, ChevronDownIcon } from '@heroicons/react/20/solid'
 import { useContext, useEffect, useRef, useState } from 'react'
 import { useAllTypeOfVehicles } from '../hooks/useTypeOfVehicles'
 import { InputContext } from '../context/InputContext'
+import { CheckIcon } from '@heroicons/react/16/solid'
+import { useAllServices } from '../hooks/useServices'
+import { firstLetterMayus } from '../helpers/stringHelpers'
 
 export function InputEmail ({ initialValue }) {
   const labelText = 'Email'
@@ -222,7 +225,7 @@ export function VehicleTypeDropDown ({ initialValue = '' }) {
           <ArrowDownCircleIcon className={'w-8 h-8 ' + ArrowStyle} />
         </button>
       </div>
-      <div className={'absolute top-[80%] bg-gray-200 w-60 h-fit min-h-5 rounded-sm ' + openClose}>
+      <div className={'absolute top-[80px] bg-gray-200 w-60 h-fit min-h-5 rounded-sm ' + openClose}>
         {vehiclesTypes.map(type => (
           <p key={type.id} className='p-1 px-2 uppercase border-gray-400 hover:bg-gray-300 cursor-pointer' onClick={() => { handleSelect(type.description) }}>{type.description}</p>
         ))}
@@ -230,7 +233,7 @@ export function VehicleTypeDropDown ({ initialValue = '' }) {
     </div>
   )
 }
-function Input ({ labelText, errorMessage, validateInput, initialValue = '', type = 'text', name = labelText }) {
+function Input ({ labelText, errorMessage, validateInput, initialValue, type = 'text', name = labelText }) {
   const input = useRef()
   const { fieldValidationStatus, addField, fields, validateField } = useContext(InputContext)
   const [inputStyle, setInputStyle] = useState()
@@ -285,5 +288,88 @@ function Input ({ labelText, errorMessage, validateInput, initialValue = '', typ
       />
       <p className={'mt-1 h-6 text-sm ' + messageStyle}>{errorMessage}</p>
     </label>
+  )
+}
+
+export function ServiceDropdown ({ initialValue }) {
+  const services = useAllServices()
+  const values = services.map(vehicle => vehicle.service_name)
+
+  return (
+    <Dropdown initialValue={initialValue} options={values} labelText='Servicio' name='service' />
+  )
+}
+export function TypeDropdown ({ initialValue }) {
+  const vehicles = useAllTypeOfVehicles()
+  const values = vehicles.map(vehicle => vehicle.description)
+
+  return (
+    <Dropdown initialValue={initialValue} options={values} labelText='Tipo' name='vehicleType' />
+  )
+}
+
+export function Dropdown ({ initialValue = '', labelText, options, name }) {
+  const { fields, addField, validateField } = useContext(InputContext)
+
+  // states
+  const [isActive, setIsActive] = useState(false)
+
+  // styles
+  const listHeightStyle = isActive ? 'max-h-56' : 'max-h-0'
+  const valueStyle = isActive ? 'bg-gray-700' : 'bg-gray-800'
+  const arrowValueStyle = isActive ? 'rotate-180' : 'rotate-0'
+
+  // logica
+  const handleSelect = (v) => {
+    setIsActive(false)
+    addField(name, v)
+  }
+
+  useEffect(() => {
+    if (initialValue !== '') {
+      validateField(name, true)
+      addField(name, initialValue)
+    } else {
+      validateField(name, false)
+      addField(name, 'Opcion')
+    }
+  }, [initialValue])
+
+  return (
+    <div className='w-44'>
+      <span className='text-lg text-gray-950 font-semibold w-full'>{labelText}</span>
+      <div className='h-12 overflow-hidden'>
+        <ul
+          onClick={() => setIsActive(!isActive)}
+          className={`absolute z-20 transition-all duration-300 flex flex-col w-fit min-w-44 p-1 h-fit gap-1 min-h-12 bg-gray-800 overflow-hidden text-white rounded-sm ${listHeightStyle}`}
+        >
+          <div
+            className={`transition-all flex-shrink-0 h-[40px] w-full flex justify-between px-2 items-center rounded-sm cursor-pointer hover:bg-gray-700 ${valueStyle}`}
+            type='text'
+            value='lenguaje'
+          >
+            <p className=' cursor-pointer'>{fields[name]}</p>
+            <ChevronDownIcon className={`transition-all w-6 text-white ${arrowValueStyle}`} />
+          </div>
+          {
+        options.map((option, index) => <Option key={index} optionName={firstLetterMayus(option)} callback={handleSelect} actualValue={fields[name]} />)
+      }
+        </ul>
+      </div>
+    </div>
+  )
+}
+
+function Option ({ optionName, callback, actualValue }) {
+  const iconStyle = optionName === actualValue ? 'opacity-100' : 'opacity-10'
+
+  return (
+    <li
+      onClick={() => callback(optionName)}
+      className='flex-shrink-0 h-[40px] w-full flex justify-between px-2 items-center bg-gray-800 hover:bg-gray-700 hover:text-blue-500 rounded-sm cursor-pointer'
+    >
+      <p className='cursor-pointer'>{optionName}</p>
+      <CheckIcon className={`text-green-600 w-4 ${iconStyle}`} />
+    </li>
   )
 }

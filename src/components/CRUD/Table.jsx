@@ -7,17 +7,37 @@ import { VehicleContext } from '../../context/VehicleContext'
 import { ModalContext } from '../../context/ModalContext'
 import { useUserAppointments } from '../../hooks/useAppointments'
 import { AppointmentContext } from '../../context/AppointmentContext'
+import { usePrices } from '../../hooks/usePrices'
+import { firstLetterMayus } from '../../helpers/stringHelpers'
+import { InputContext } from '../../context/InputContext'
 
 function TableCol ({ children, onClick }) {
   return <td onClick={onClick} className='cursor-default p-3 uppercase font-bold'>{children}</td>
 }
-function TableRow ({ children, onClick }) {
-  return <th onClick={onClick} className='cursor-default p-3 font-normal border-b-2 border-gray-400'>{children}</th>
+function TableRow ({ children, onClick, textFormat }) {
+  let modifyText = t => t
+  switch (textFormat) {
+    case 'mayus':
+      modifyText = t => t.toUpperCase()
+      break
+    case 'minus':
+
+      modifyText = t => t.toLowerCase()
+      break
+    case 'capitalize':
+      modifyText = t => firstLetterMayus(t)
+      break
+
+    default:
+
+      break
+  }
+  return <th onClick={onClick} className='cursor-default p-3 font-normal border-b-2 border-gray-400'>{modifyText(children)}</th>
 }
 
 export function Table ({ cols, children }) {
   return (
-    <table className='text-l w-fit h-fit bg-gray-50 rounded-lg overflow-hidden'>
+    <table className='text-l min-w-[40vw] w-fit h-fit bg-gray-50 rounded-lg overflow-hidden'>
       <thead>
         <tr className='bg-black text-white font-black text-center opacity-90'>
           {cols.map((col, index) => <TableCol key={index}>{col}</TableCol>)}
@@ -124,8 +144,8 @@ export function EmployReserveAppointmentTable () {
           <tr key={appointment.id}>
             <TableRow>{appointment.date}</TableRow>
             <TableRow>{appointment.hour}</TableRow>
-            <TableRow>{appointment.user.name}</TableRow>
-            <TableRow>{appointment.vehicle.vehicleDomain}</TableRow>
+            <TableRow textFormat='capitalize'>{appointment.user.name}</TableRow>
+            <TableRow textFormat='capitalize'>{appointment.vehicle.vehicleDomain}</TableRow>
             <TableRow onClick={() => completeReservedAppointment(appointment)}><CheckCircleIcon className='text-green-600 drop-shadow-lg hover:scale-105 active:scale-95 m-auto w-6 cursor-pointer' /></TableRow>
           </tr>
         ))
@@ -178,6 +198,27 @@ export function UserTable () {
         : (
           <tr>
             <TableRow>Cargando</TableRow>
+          </tr>
+          )}
+    </Table>
+  )
+}
+
+export function EmployPricesTable ({ vehicleType, service }) {
+  const prices = usePrices({ vehicleType, service })
+  return (
+    <Table cols={['Valor', 'Servicio', 'Tipo']}>
+      {(prices)
+        ? prices.map(price => (
+          <tr key={price.id}>
+            <TableRow>${price.value}</TableRow>
+            <TableRow textFormat='capitalize'>{price.service}</TableRow>
+            <TableRow textFormat='capitalize'>{price.vehicleType}</TableRow>
+          </tr>
+        ))
+        : (
+          <tr>
+            <td className='text-center p-4' colSpan={5}>No hay turnos disponibles</td>
           </tr>
           )}
     </Table>

@@ -12,7 +12,7 @@ export function Navbar () {
   }
 
   return (
-    <nav className='sticky top-0 left-0 z-20 w-full flex justify-between items-center px-5 py-3 text-white text-l opacity-95'>
+    <nav className='sticky top-0 left-0 z-50 w-full flex justify-between items-center px-5 py-3 text-white text-l opacity-95'>
       <div className=' absolute top-0 left-0 w-full h-full bg-black z-0' />
       <h1 className='text-4xl font-bold z-10'><Link to='/'>RFcarwash</Link></h1>
       <Menu menuState={menuState}>

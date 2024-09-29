@@ -11,6 +11,7 @@ import { ClientVehicles } from './pages/ClientVehicles'
 import { ClientAppointments } from './pages/ClientAppointments'
 import { useEffect } from 'react'
 import { EmployAppointments } from './pages/EmployAppointments'
+import { EmployPrices } from './pages/EmployPrices'
 
 export default function App () {
   return (
@@ -27,6 +28,7 @@ export default function App () {
         <Route path='/misturnos' element={<ClientAppointments />} />
         <Route path='/turno/:service' element={<AppointmentReserve />} />
         <Route path='/turnos' element={<EmployAppointments />} />
+        <Route path='/precios' element={<EmployPrices />} />
       </Routes>
     </>
   )

@@ -61,11 +61,11 @@ export function useAppointmentHour (date = '01-01-2024') {
   return appointments
 }
 
-export function useAppointments () {
+export function useAppointments (date = null) {
   const [appointments, setAppointments] = useState()
 
   useEffect(() => {
-    fetch(APPOINTMENTS_ENDPOINT)
+    fetch(`${APPOINTMENTS_ENDPOINT}?date=${date}`)
       .then(res => res.json())
       .then(data => {
         setAppointments(data.data)
@@ -73,7 +73,7 @@ export function useAppointments () {
       .catch(error => {
         throw error
       })
-  }, [])
+  }, [date])
 
   return appointments
 }

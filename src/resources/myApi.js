@@ -17,6 +17,8 @@ export const USER_NEW_VEHICLE = API_URL + '/users/newVehicle/'
 export const USER_ROLE = API_URL + '/users/role'
 export const USER_APPOINTMENTS = USERS_ENDPOINT + 'appointments'
 
+export const PRICES_ENDPOINT = API_URL + '/prices/'
+
 export const SERVICE_ENDPOINT = API_URL + '/services/'
 
 export const TYPE_OF_VEHICLE_ENDPOINT = API_URL + '/typeOfVehicles/'

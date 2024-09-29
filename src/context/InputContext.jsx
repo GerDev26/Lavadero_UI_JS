@@ -21,8 +21,17 @@ export const InputContextProvider = ({ children }) => {
     })
   }, [fieldValidationStatus])
 
-  const clearFields = () => {
-    setFields({})
+  const clearFields = (defaultValue = '') => {
+    setFields(prevFields => {
+      const emptyFields = Object.keys(prevFields).reduce((acc, key) => {
+        acc[key] = defaultValue
+        return acc
+      }, {})
+
+      return emptyFields
+    })
+
+    // Actualizar el estado de validación
     setFieldValidationStatus({})
   }
 
