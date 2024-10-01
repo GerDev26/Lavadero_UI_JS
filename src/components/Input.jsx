@@ -8,80 +8,102 @@ import { firstLetterMayus } from '../helpers/stringHelpers'
 
 export function InputEmail ({ initialValue }) {
   const labelText = 'Email'
+  const name = 'email'
   const { validateField } = useContext(InputContext)
   const [message, setMessage] = useState('')
 
   const validateInput = (value) => {
     if (value.length === 0) {
       setMessage('El campo esta vacio')
-      validateField(labelText, false)
+      validateField(name, false)
     } else if (!value.includes('@')) {
       setMessage('Tu email debe incluir @')
-      validateField(labelText, false)
+      validateField(name, false)
     } else if (value.includes(' ')) {
       setMessage('Tu email no puede contener espacios')
-      validateField(labelText, false)
+      validateField(name, false)
     } else if (!value.includes('.com')) {
       setMessage('Debe incluir .com')
-      validateField(labelText, false)
+      validateField(name, false)
     } else {
       setMessage('¡Correcto!')
-      validateField(labelText, true)
+      validateField(name, true)
     }
   }
   return (
-    <Input labelText={labelText} errorMessage={message} validateInput={validateInput} initialValue={initialValue} />
+    <Input labelText={labelText} name={name} errorMessage={message} validateInput={validateInput} initialValue={initialValue} />
   )
 }
 export function InputPassword ({ initialValue }) {
   const labelText = 'Contraseña'
+  const name = 'password'
   const { validateField } = useContext(InputContext)
   const [message, setMessage] = useState('')
 
   const validateInput = (value) => {
     if (value.length === 0) {
       setMessage('El campo esta vacio')
-      validateField(labelText, false)
+      validateField(name, false)
     } else if (value.length < 8) {
       setMessage('Ingrese almenos 8 caracteres')
-      validateField(labelText, false)
+      validateField(name, false)
     } else {
       setMessage('¡Correcto!')
-      validateField(labelText, true)
+      validateField(name, true)
     }
   }
   return (
-    <Input labelText={labelText} errorMessage={message} validateInput={validateInput} type='password' initialValue={initialValue} />
+    <Input labelText={labelText} name={name} errorMessage={message} validateInput={validateInput} type='password' initialValue={initialValue} />
   )
 }
-export function InputText ({ labelText }) {
+export function InputText ({ labelText, name = '' }) {
+  name = name === '' ? labelText : name
   const { validateField } = useContext(InputContext)
   const [message, setMessage] = useState('')
   const numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
   const validateInput = (value) => {
     if (value.length === 0) {
       setMessage('El campo esta vacio')
-      validateField(labelText, false)
+      validateField(name, false)
     } else if (value.includes(' ')) {
       setMessage('No puede incluir espacios')
-      validateField(labelText, false)
+      validateField(name, false)
     } else if (numbers.some(char => value.includes(char))) {
       setMessage('No puede incluir numeros')
-      validateField(labelText, false)
+      validateField(name, false)
     } else {
       setMessage('¡Correcto!')
-      validateField(labelText, true)
+      validateField(name, true)
     }
   }
   return (
-    <Input labelText={labelText} errorMessage={message} validateInput={validateInput} />
+    <Input labelText={labelText} name={name} errorMessage={message} validateInput={validateInput} />
   )
 }
-export function InputNumber () {
+
+export function InputNumber ({ labelText, name = '' }) {
+  name = name === '' ? labelText : name
+  const { validateField } = useContext(InputContext)
+  const [message, setMessage] = useState('')
+
+  const validateInput = (value) => {
+    if (value.length === 0) {
+      setMessage('El campo está vacío')
+      validateField(name, false)
+    } else if (!/^\d+$/.test(value)) {
+      setMessage('Solo se permiten números')
+      validateField(name, false)
+    } else {
+      setMessage('¡Correcto!')
+      validateField(name, true)
+    }
+  }
+
   return (
-    <h1>Hola</h1>
+    <Input labelText={labelText} name={name} errorMessage={message} validateInput={validateInput} />
   )
 }
+
 export function InputDomain ({ initialValue }) {
   const name = 'vehicleDomain'
   const { validateField } = useContext(InputContext)
@@ -240,7 +262,7 @@ function Input ({ labelText, errorMessage, validateInput, initialValue, type = '
   const [messageStyle, setMessageStyle] = useState()
 
   useEffect(() => {
-    if (initialValue !== '') {
+    if (initialValue) {
       validateField(name, true)
       addField(name, initialValue)
     } else {

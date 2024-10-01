@@ -1,7 +1,6 @@
-import { useContext, useEffect, useRef, useState } from 'react'
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useContext, useEffect, useState } from 'react'
 import { EmployCompleteAppointmentTable, EmployReserveAppointmentTable } from '../components/CRUD/Table'
-import { Footer } from '../components/Footer'
-import { Navbar } from '../components/Navbar'
 import { AppointmentContext, AppointmentProvider } from '../context/AppointmentContext'
 import { useAppointments } from '../hooks/useAppointments'
 import { getActualDate } from '../helpers/dateHelpers'
@@ -9,11 +8,9 @@ import { getActualDate } from '../helpers/dateHelpers'
 export function EmployAppointments () {
   return (
     <>
-      <Navbar />
       <AppointmentProvider>
         <Crud />
       </AppointmentProvider>
-      <Footer />
     </>
   )
 }

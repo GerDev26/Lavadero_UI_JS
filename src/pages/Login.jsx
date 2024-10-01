@@ -1,10 +1,8 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { InputEmail, InputPassword } from '../components/Input'
-import { mapFields } from '../helpers/formHelpers'
-import { startSession } from '../services/authService'
-import { setAccessToken } from '../helpers/tokenHelpers'
 import { InputContext, InputContextProvider } from '../context/InputContext'
 import { useContext } from 'react'
+import { AuthContext } from '../context/AuthContext'
 
 export function Login () {
   return (
@@ -29,33 +27,22 @@ export function Login () {
   )
 }
 function Form () {
-  const navigate = useNavigate()
   const { fields, setInvalidForm } = useContext(InputContext)
+  const { login } = useContext(AuthContext)
 
-  const newStructure = {
-    Email: 'email',
-    Contraseña: 'password'
-  }
-
-  const login = async (fields) => {
-    const mappedFields = mapFields({ formFields: fields, newStructure })
+  const handleSubmit = async (event) => {
+    event.preventDefault()
     setInvalidForm(true)
     try {
-      const res = await startSession({ user: mappedFields })
-      setAccessToken({ token: res.accessToken })
-      navigate('/')
-    } catch (error) {
-      // eslint-disable-next-line no-undef
-      alert(error)
+      await login(fields)
+    } catch {
+      alert('Error')
       setInvalidForm(false)
     }
   }
-  const handlesubmit = (formEvent) => {
-    formEvent.preventDefault()
-    login(fields)
-  }
+
   return (
-    <form onSubmit={handlesubmit} className='w-fit h-full p-8 bg-gray-50 flex flex-col justify-center'>
+    <form onSubmit={handleSubmit} className='w-fit h-full p-8 bg-gray-50 flex flex-col justify-center'>
       <h1 className='text-3xl mb-4 font-medium text-center'>Iniciar Sesion</h1>
       <InputEmail />
       <InputPassword />

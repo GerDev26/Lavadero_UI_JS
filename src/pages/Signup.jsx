@@ -1,10 +1,8 @@
-import { Link, useNavigate } from 'react-router-dom'
-import { InputEmail, InputPassword, InputText } from '../components/Input'
-import { mapFields } from '../helpers/formHelpers'
-import { registerUser } from '../services/authService'
-import { setAccessToken } from '../helpers/tokenHelpers'
+import { Link } from 'react-router-dom'
+import { InputEmail, InputNumber, InputPassword, InputText } from '../components/Input'
 import { InputContext, InputContextProvider } from '../context/InputContext'
 import { useContext } from 'react'
+import { AuthContext } from '../context/AuthContext'
 
 export function Signup () {
   return (
@@ -32,38 +30,27 @@ export function Signup () {
 
 function Form () {
   const { fields, setInvalidForm } = useContext(InputContext)
-  const navigate = useNavigate()
-  const newStructure = {
-    Nombre: 'name',
-    Apellido: 'surname',
-    Contraseña: 'password',
-    Telefono: 'phone_number',
-    Email: 'email'
-  }
+  const { register } = useContext(AuthContext)
 
   const handlesubmit = async (formEvent) => {
     formEvent.preventDefault()
-    const mappedFields = mapFields({ formFields: fields, newStructure })
     setInvalidForm(true)
     try {
-      const token = await registerUser(mappedFields)
-      setAccessToken({ token })
-      navigate('/')
+      await register(fields)
     } catch {
-      // eslint-disable-next-line no-undef
-      alert('Hubo un error al registrarse')
       setInvalidForm(false)
     }
   }
+
   return (
     <form onSubmit={handlesubmit} className='w-full h-full p-8 bg-gray-50 flex flex-col justify-center'>
       <h1 className='text-3xl mb-4 font-medium'>Crear cuenta</h1>
       <div className='grid grid-cols-2 grid-rows-3 min-w-[500px]'>
-        <InputText labelText='Nombre' />
-        <InputText labelText='Apellido' />
+        <InputText labelText='Nombre' name='name' />
+        <InputText labelText='Apellido' name='surname' />
         <InputEmail />
         <InputPassword />
-        <InputText labelText='Telefono' />
+        <InputNumber labelText='Telefono' name='phone_number' />
       </div>
       <div className='flex flex-col gap-1 mb-2'>
         <SignUpButton />

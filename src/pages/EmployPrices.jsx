@@ -1,18 +1,14 @@
 import { useContext } from 'react'
 import { EmployPricesTable } from '../components/CRUD/Table'
-import { Footer } from '../components/Footer'
 import { ServiceDropdown, TypeDropdown } from '../components/Input'
-import { Navbar } from '../components/Navbar'
 import { InputContext, InputContextProvider } from '../context/InputContext'
 
 export function EmployPrices () {
   return (
     <>
-      <Navbar />
       <InputContextProvider>
         <Crud />
       </InputContextProvider>
-      <Footer />
 
     </>
   )

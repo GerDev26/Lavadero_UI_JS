@@ -1,11 +1,12 @@
-import { useCheckUserRole } from '../hooks/useUsers'
 import { ClientHome } from './ClientHome'
 import { AdminHome } from './AdminHome'
 import { EmployHome } from './EmployHome'
-import { SimpleLoader } from '../components/SimpleLoader'
+import { FullScreenSimpleLoader } from '../components/SimpleLoader'
+import { useContext } from 'react'
+import { AuthContext } from '../context/AuthContext'
 
 export function Home () {
-  const role = useCheckUserRole()
+  const { role } = useContext(AuthContext)
 
   switch (role) {
     case 'administrador':
@@ -14,12 +15,10 @@ export function Home () {
       return <EmployHome />
     case 'cliente':
       return <ClientHome />
+    case 'visitor':
+      return <ClientHome />
 
     default:
-      return (
-        <main className='w-full h-screen flex justify-center items-center'>
-          <SimpleLoader />
-        </main>
-      )
+      return <FullScreenSimpleLoader />
   }
 }

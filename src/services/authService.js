@@ -19,7 +19,7 @@ export async function registerUser (newUser) {
     console.log(data)
     return data.accessToken
   } catch (error) {
-    console.error('Error:', error)
+    console.error('Error:', { error })
     throw error
   }
 }

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useAllUsers } from '../../hooks/useUsers'
 import { useContext, useEffect } from 'react'
 import { CheckCircleIcon, PencilIcon, TrashIcon, XCircleIcon } from '@heroicons/react/20/solid'
@@ -9,7 +10,6 @@ import { useUserAppointments } from '../../hooks/useAppointments'
 import { AppointmentContext } from '../../context/AppointmentContext'
 import { usePrices } from '../../hooks/usePrices'
 import { firstLetterMayus } from '../../helpers/stringHelpers'
-import { InputContext } from '../../context/InputContext'
 
 function TableCol ({ children, onClick }) {
   return <td onClick={onClick} className='cursor-default p-3 uppercase font-bold'>{children}</td>

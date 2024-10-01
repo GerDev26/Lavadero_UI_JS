@@ -4,18 +4,14 @@ import { useUserVehicles } from '../hooks/useVehicles'
 import { FormContext, FormProvider } from '../context/FormContext'
 import { useNavigate, useParams } from 'react-router-dom'
 import { reserveAppointment } from '../services/appointmentServices'
-import { Navbar } from '../components/Navbar'
-import { Footer } from '../components/Footer'
 import { getActualDate, sevenDays } from '../helpers/dateHelpers'
 
 export function AppointmentReserve () {
   return (
     <>
-      <Navbar />
       <FormProvider>
         <ReserveForm />
       </FormProvider>
-      <Footer />
     </>
   )
 }

@@ -6,11 +6,7 @@ const initialState = {
   appointments: []
 }
 
-export const AppointmentContext = createContext({
-  appointments: initialState.appointments,
-  removeAppointment: async () => {},
-  setAppointments: () => {}
-})
+export const AppointmentContext = createContext({})
 
 export const AppointmentProvider = ({ children }) => {
   const [state, dispatch] = useReducer(dataReducer, initialState)

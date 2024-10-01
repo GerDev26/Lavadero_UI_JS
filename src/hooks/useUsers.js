@@ -19,7 +19,7 @@ export function useAllUsers () {
   return users
 }
 
-export function useCheckUserRole () {
+export function useCheckUserRole (rechargeRole = false) {
   const [role, setRole] = useState('')
 
   useEffect(() => {
@@ -38,11 +38,12 @@ export function useCheckUserRole () {
           setRole(res.role)
         })
         .catch(() => {
-          setRole('cliente')
+          setRole('visitor')
         })
     } else {
-      setRole('cliente')
+      setRole('visitor')
     }
-  }, [])
+    console.log('render')
+  }, [rechargeRole])
   return role
 }

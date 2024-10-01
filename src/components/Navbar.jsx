@@ -1,29 +1,58 @@
 import { Bars3Icon } from '@heroicons/react/20/solid'
-import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { closeSession } from '../services/authService'
-import { getAccessToken, removeAccessToken } from '../helpers/tokenHelpers'
+import { useContext, useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { getAccessToken } from '../helpers/tokenHelpers'
+import { AuthContext } from '../context/AuthContext'
 
 export function Navbar () {
   const [menuState, setMenuState] = useState(false)
+  const [selectedMenu, setSelectedMenu] = useState()
+  const { role } = useContext(AuthContext)
 
   const toggleMenu = () => {
     setMenuState(!menuState)
   }
+  useEffect(() => {
+    console.log(role)
+    switch (role) {
+      case 'empleado':
+        setSelectedMenu(<EmployMenu />)
+        break
+
+      default:
+        setSelectedMenu(<ClientMenu />)
+        break
+    }
+  }, [role])
 
   return (
     <nav className='sticky top-0 left-0 z-50 w-full flex justify-between items-center px-5 py-3 text-white text-l opacity-95'>
       <div className=' absolute top-0 left-0 w-full h-full bg-black z-0' />
       <h1 className='text-4xl font-bold z-10'><Link to='/'>RFcarwash</Link></h1>
-      <Menu menuState={menuState}>
-        <SessionItemCheck>
-          <Item text='mis turnos' to='/misTurnos' />
-          <Item text='mis vehiculos' to='/misVehiculos' />
-          <CloseSessionItem />
-        </SessionItemCheck>
-      </Menu>
+      {selectedMenu}
       <Bars3Icon onClick={toggleMenu} className='relative z-50 w-8 h-8 mr-2 text-white md:hidden' />
     </nav>
+  )
+}
+
+function EmployMenu ({ menuState }) {
+  return (
+    <Menu menuState={menuState}>
+      <SessionItemCheck>
+        <CloseSessionItem />
+      </SessionItemCheck>
+    </Menu>
+  )
+}
+function ClientMenu ({ menuState }) {
+  return (
+    <Menu menuState={menuState}>
+      <SessionItemCheck>
+        <Item text='mis turnos' to='/misTurnos' />
+        <Item text='mis vehiculos' to='/misVehiculos' />
+        <CloseSessionItem />
+      </SessionItemCheck>
+    </Menu>
   )
 }
 
@@ -62,21 +91,9 @@ function SessionItemCheck ({ children }) {
 }
 
 function CloseSessionItem () {
-  const token = getAccessToken()
-  const navigate = useNavigate()
-
-  const handleClick = async () => {
-    try {
-      await closeSession({ token })
-      removeAccessToken()
-      navigate('/')
-      window.location.reload()
-    } catch (error) {
-      alert(error)
-    }
-  }
+  const { logout } = useContext(AuthContext)
 
   return (
-    <Item onClick={handleClick} text='Cerrar sesion' />
+    <Item onClick={logout} text='Cerrar sesion' />
   )
 }
