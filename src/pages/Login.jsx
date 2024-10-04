@@ -6,10 +6,9 @@ import { AuthContext } from '../context/AuthContext'
 
 export function Login () {
   return (
-
-    <main className='relative w-full h-screen flex items-center justify-center'>
-      <div className='relative w-[80%] max-w-[800px] z-20 h-[80vh] max-h-[500px] flex rounded-lg overflow-hidden'>
-        <div className='relative h-full w-full px-8 flex flex-col items-center'>
+    <>
+      <div className='fixed inset-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] max-w-[800px] z-20 h-[100vh] max-h-[500px] flex flex-col md:flex-row rounded-lg overflow-hidden'>
+        <div className='relative h-full w-full px-8 flex-col items-center hidden md:flex'>
           <div className=' relative z-10 text-white mt-14 gap-3 flex flex-col'>
             <h1 className='text-4xl font-bold'>Bienvenido a RFcarwash</h1>
             <p className='text-xl font-medium'>Optimiza cada aspecto de tu lavadero y brinda un servicio impecable a tus clientes.</p>
@@ -20,9 +19,9 @@ export function Login () {
           <Form />
         </InputContextProvider>
       </div>
-      <img className='absolute top-0 w-full h-full object-cover blur-[2px]' src='https://www.shutterstock.com/image-photo/woman-washing-her-car-selfservice-600nw-1861269733.jpg' alt='' />
-      <div className='absolute top-0 w-full h-full z-10 opacity-25 bg-black' />
-    </main>
+      <img className='fixed top-0 w-full h-full object-cover blur-[2px]' src='https://www.shutterstock.com/image-photo/woman-washing-her-car-selfservice-600nw-1861269733.jpg' alt='' />
+      <div className='fixed top-0 w-full h-full z-10 opacity-25 bg-black' />
+    </>
 
   )
 }

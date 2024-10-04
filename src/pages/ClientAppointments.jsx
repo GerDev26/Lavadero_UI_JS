@@ -1,13 +1,13 @@
-import { AppointmentTable } from '../components/CRUD/Table'
+import { UserAppointmentTable } from '../components/Tables/AppointmentsTable'
 import { AppointmentProvider } from '../context/AppointmentContext'
 
 export function ClientAppointments () {
   return (
     <>
       <AppointmentProvider>
-        <div className='m-auto my-8 w-fit'>
-          <AppointmentTable />
-        </div>
+        <section className='p-2'>
+          <UserAppointmentTable />
+        </section>
       </AppointmentProvider>
     </>
   )

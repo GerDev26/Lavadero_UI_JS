@@ -5,7 +5,17 @@ export default {
     './src/**/*.{js,ts,jsx,tsx}'
   ],
   theme: {
-    extend: {}
+    extend: {
+      animation: {
+        skeletonLoading: 'skeletonLoading 1s linear infinite'
+      },
+      keyframes: {
+        skeletonLoading: {
+          '0%': { backgroundColor: 'hsl(200, 20%, 70%)' },
+          '100%': { backgroundColor: 'hsl(200, 20%, 95%)' }
+        }
+      }
+    }
   },
   plugins: []
 }

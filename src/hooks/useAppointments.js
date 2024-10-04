@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { APPOINTMENTS_DATES, APPOINTMENTS_ENDPOINT, USER_APPOINTMENTS } from '../resources/myApi'
+import { APPOINTMENTS_DATES, APPOINTMENTS_ENDPOINT, APPOINTMENTS_WEEK, USER_APPOINTMENTS } from '../resources/myApi'
 import { getAccessToken } from '../helpers/tokenHelpers'
 
 export function useUserAppointments () {
@@ -74,6 +74,23 @@ export function useAppointments (date = null) {
         throw error
       })
   }, [date])
+
+  return appointments
+}
+
+export function useWeekAppointments () {
+  const [appointments, setAppointments] = useState()
+
+  useEffect(() => {
+    fetch(APPOINTMENTS_WEEK)
+      .then(res => res.json())
+      .then(data => {
+        setAppointments(data)
+      })
+      .catch(error => {
+        throw error
+      })
+  }, [])
 
   return appointments
 }

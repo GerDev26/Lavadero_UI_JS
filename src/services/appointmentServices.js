@@ -24,7 +24,7 @@ export async function reserveAppointment (appointment) {
 
     const data = await res.json()
     // eslint-disable-next-line no-undef
-    alert(data.message)
+    console.log(data.message)
   } catch (error) {
     console.log(error)
     throw error

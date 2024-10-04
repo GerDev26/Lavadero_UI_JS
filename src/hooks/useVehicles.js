@@ -3,7 +3,7 @@ import { USER_VEHICLES } from '../resources/myApi'
 import { getAccessToken } from '../helpers/tokenHelpers'
 
 export function useUserVehicles () {
-  const [vehicles, setVehicles] = useState([])
+  const [vehicles, setVehicles] = useState()
   const token = getAccessToken()
 
   useEffect(() => {

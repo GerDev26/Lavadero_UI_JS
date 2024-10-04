@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { ArrowDownCircleIcon, ChevronDownIcon } from '@heroicons/react/20/solid'
 import { useContext, useEffect, useRef, useState } from 'react'
 import { useAllTypeOfVehicles } from '../hooks/useTypeOfVehicles'
@@ -81,7 +82,7 @@ export function InputText ({ labelText, name = '' }) {
   )
 }
 
-export function InputNumber ({ labelText, name = '' }) {
+export function InputNumber ({ labelText, name = '', className = '' }) {
   name = name === '' ? labelText : name
   const { validateField } = useContext(InputContext)
   const [message, setMessage] = useState('')
@@ -100,7 +101,7 @@ export function InputNumber ({ labelText, name = '' }) {
   }
 
   return (
-    <Input labelText={labelText} name={name} errorMessage={message} validateInput={validateInput} />
+    <Input className={className} labelText={labelText} name={name} errorMessage={message} validateInput={validateInput} />
   )
 }
 
@@ -255,7 +256,7 @@ export function VehicleTypeDropDown ({ initialValue = '' }) {
     </div>
   )
 }
-function Input ({ labelText, errorMessage, validateInput, initialValue, type = 'text', name = labelText }) {
+function Input ({ className = '', labelText, errorMessage, validateInput, initialValue, type = 'text', name = labelText }) {
   const input = useRef()
   const { fieldValidationStatus, addField, fields, validateField } = useContext(InputContext)
   const [inputStyle, setInputStyle] = useState()
@@ -303,7 +304,7 @@ function Input ({ labelText, errorMessage, validateInput, initialValue, type = '
         ref={input}
         value={fields[name] || ''}
         className={
-            'w-full p-2 bg-gray-200 focus:bg-gray-300 border-b-4 border-gray rounded-sm ' + inputStyle
+            'w-full p-2 bg-gray-200 focus:bg-gray-300 border-b-4 border-gray rounded-sm ' + inputStyle + ' ' + className
         }
         type={type}
         placeholder={'Ingrese su ' + labelText}
@@ -358,8 +359,7 @@ export function Dropdown ({ initialValue = '', labelText, options, name }) {
   }, [initialValue])
 
   return (
-    <div className='w-44'>
-      <span className='text-lg text-gray-950 font-semibold w-full'>{labelText}</span>
+    <div className='w-44 bg-blue-300'>
       <div className='h-12 overflow-hidden'>
         <ul
           onClick={() => setIsActive(!isActive)}

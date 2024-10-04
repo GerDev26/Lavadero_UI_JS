@@ -26,33 +26,35 @@ export function Navbar () {
   }, [role])
 
   return (
-    <nav className='sticky top-0 left-0 z-50 w-full flex justify-between items-center px-5 py-3 text-white text-l opacity-95'>
+    <nav className='sticky top-0 left-0 z-50 w-full min-h-20 flex justify-between items-center px-5 py-3 text-white text-l opacity-95'>
       <div className=' absolute top-0 left-0 w-full h-full bg-black z-0' />
       <h1 className='text-4xl font-bold z-10'><Link to='/'>RFcarwash</Link></h1>
-      {selectedMenu}
+      <Menu menuState={menuState}>
+        {selectedMenu}
+      </Menu>
       <Bars3Icon onClick={toggleMenu} className='relative z-50 w-8 h-8 mr-2 text-white md:hidden' />
     </nav>
   )
 }
 
-function EmployMenu ({ menuState }) {
+function EmployMenu () {
   return (
-    <Menu menuState={menuState}>
+    <>
       <SessionItemCheck>
         <CloseSessionItem />
       </SessionItemCheck>
-    </Menu>
+    </>
   )
 }
-function ClientMenu ({ menuState }) {
+function ClientMenu () {
   return (
-    <Menu menuState={menuState}>
+    <>
       <SessionItemCheck>
         <Item text='mis turnos' to='/misTurnos' />
         <Item text='mis vehiculos' to='/misVehiculos' />
         <CloseSessionItem />
       </SessionItemCheck>
-    </Menu>
+    </>
   )
 }
 

@@ -1,11 +1,12 @@
 const API = {
-  local: 'http://127.0.0.1:8000/api',
+  local: 'http://192.168.100.143:8000/api',
   production: 'https://lavaderoapi-production.up.railway.app/api'
 }
 
 export const API_URL = API.local
 
 export const APPOINTMENTS_ENDPOINT = API_URL + '/appointments/'
+export const APPOINTMENTS_WEEK = API_URL + '/appointmentsWeek'
 export const APPOINTMENTS_DATES = API_URL + '/dates/'
 export const APPOINTMENTS_RESERVE = API_URL + '/appointments/reserve'
 export const APPOINTMENTS_RELEASE = API_URL + '/appointments/release/'

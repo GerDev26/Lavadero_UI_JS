@@ -12,7 +12,6 @@ export const InputContextProvider = ({ children }) => {
   const [invalidForm, setInvalidForm] = useState(false)
 
   useEffect(() => {
-    console.log(fieldValidationStatus)
     const okValues = Object.values(fieldValidationStatus)
     setInvalidForm(() => {
       if (okValues.length === 0) { // Si el array esta vacio devuelvo true

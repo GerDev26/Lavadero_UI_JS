@@ -1,5 +1,5 @@
 import { CreateVehicleModal, UpdateVehicleModal } from '../components/CRUD/Modal'
-import { VehicleTable } from '../components/CRUD/Table'
+import { UserVehiclesTable } from '../components/Tables/VehicleTable'
 import { InputContextProvider } from '../context/InputContext'
 import { ModalProvider } from '../context/ModalContext'
 import { VehicleProvider } from '../context/VehicleContext'
@@ -16,9 +16,9 @@ export function ClientVehicles () {
           <InputContextProvider>
             <CreateVehicleModal />
           </InputContextProvider>
-          <div className='m-auto my-8 w-fit'>
+          <div className='p-2 w-full'>
             <OpenModalBtn text='Añadir Vehiculo' />
-            <VehicleTable />
+            <UserVehiclesTable />
           </div>
         </VehicleProvider>
 

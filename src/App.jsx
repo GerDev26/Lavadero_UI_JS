@@ -13,6 +13,7 @@ import { useEffect } from 'react'
 import { EmployAppointments } from './pages/EmployAppointments'
 import { EmployPrices } from './pages/EmployPrices'
 import { SimpleLayout } from './layouts/SimpleLayout'
+import { InputContextProvider } from './context/InputContext'
 
 export default function App () {
   return (
@@ -28,7 +29,13 @@ export default function App () {
           <Route path='/' element={<Home />} />
           <Route path='/misvehiculos' element={<ClientVehicles />} />
           <Route path='/misturnos' element={<ClientAppointments />} />
-          <Route path='/turno/:service' element={<AppointmentReserve />} />
+          <Route
+            path='/turno/:service' element={
+              <InputContextProvider>
+                <AppointmentReserve />
+              </InputContextProvider>
+            }
+          />
           <Route path='/precios' element={<EmployPrices />} />
         </Route>
 

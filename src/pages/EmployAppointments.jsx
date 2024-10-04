@@ -18,6 +18,7 @@ export function EmployAppointments () {
 function Crud () {
   const { setAppointments } = useContext(AppointmentContext)
   const actualDate = getActualDate()
+  console.log(actualDate)
   const [date, setDate] = useState(actualDate)
   const appointments = useAppointments(date)
 

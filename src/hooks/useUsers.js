@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { USER_ROLE, USERS_ENDPOINT } from '../resources/myApi'
-import { getAccessToken } from '../helpers/tokenHelpers'
+import { getAccessToken, removeAccessToken } from '../helpers/tokenHelpers'
 
 export function useAllUsers () {
   const [users, setUsers] = useState([])

@@ -7,7 +7,7 @@ const initialValue = {
 }
 
 export function usePrices ({ vehicleType, service } = initialValue) {
-  const [prices, setPrices] = useState()
+  const [prices, setPrices] = useState([])
 
   useEffect(() => {
     const searchService = 'service=' + service + '&&'
