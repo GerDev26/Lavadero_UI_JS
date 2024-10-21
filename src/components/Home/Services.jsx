@@ -7,7 +7,7 @@ export function Services () {
   const services = useAllServices()
 
   return (
-    <div className='flex flex-col md:flex-row w-full md:h-[70vh] md:max-h-[500px] gap-2 p-2 md:p-0 md:gap-0'>
+    <div className='flex flex-col md:flex-row w-full md:h-[70vh] md:max-h-[500px] gap-2 p-2 md:p-0 md:gap-0 overflow-hidden'>
       {services.map(service => (
         <ServiceItem key={service.id} id={service.id} text={service.service_name} description={service.description} imgUrl={service.image} />
       ))}

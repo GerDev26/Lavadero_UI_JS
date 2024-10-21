@@ -1,96 +1,46 @@
-import { useEffect, useState } from 'react'
+import { useFetch } from './useFetch'
 import { APPOINTMENTS_DATES, APPOINTMENTS_ENDPOINT, APPOINTMENTS_WEEK, USER_APPOINTMENTS } from '../resources/myApi'
 import { getAccessToken } from '../helpers/tokenHelpers'
 
 export function useUserAppointments () {
-  const [appointments, setAppointments] = useState([])
   const token = getAccessToken()
+  const { data: appointments, error, loading } = useFetch({
+    endpoint: USER_APPOINTMENTS,
+    headers: { Authorization: `Bearer ${token}` }
+  })
 
-  useEffect(() => {
-    fetch(USER_APPOINTMENTS, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      }
-    })
-      .then(res => res.json())
-      .then(data => {
-        setAppointments(data)
-      })
-      .catch(error => {
-        console.log(error)
-        throw error
-      })
-  }, [])
-
-  return appointments
+  return { data: appointments || [], error, loading }
 }
 
 export function useDates () {
-  const [dates, setDates] = useState([])
+  const { data: dates, error, loading } = useFetch({
+    endpoint: APPOINTMENTS_DATES
+  })
 
-  useEffect(() => {
-    fetch(APPOINTMENTS_DATES)
-      .then(async res => await res.json())
-      .then(data => {
-        setDates(data)
-      })
-      .catch(error => {
-        console.log(error)
-      })
-  }, [])
-
-  return dates
+  return { data: dates || [], error, loading }
 }
 
 export function useAppointmentHour (date = '01-01-2024') {
-  const [appointments, setAppointments] = useState([])
+  const { data: appointments, error, loading } = useFetch({
+    endpoint: `${APPOINTMENTS_ENDPOINT}${date}`
+  })
 
-  useEffect(() => {
-    fetch(APPOINTMENTS_ENDPOINT + date)
-      .then(async res => await res.json())
-      .then(data => {
-        setAppointments(data)
-      })
-      .catch(error => {
-        console.log(error)
-      })
-  }, [date])
-
-  return appointments
+  return { data: appointments || [], error, loading }
 }
 
-export function useAppointments (date = null) {
-  const [appointments, setAppointments] = useState()
+export function useAppointments ({ date = '', month = '' }) {
+  const { data, error, loading } = useFetch({
+    endpoint: APPOINTMENTS_ENDPOINT,
+    queryParams: `date=${date}&&month=${month}`
+  })
 
-  useEffect(() => {
-    fetch(`${APPOINTMENTS_ENDPOINT}?date=${date}`)
-      .then(res => res.json())
-      .then(data => {
-        setAppointments(data.data)
-      })
-      .catch(error => {
-        throw error
-      })
-  }, [date])
-
-  return appointments
+  return { data: data?.data || [], error, loading }
 }
 
 export function useWeekAppointments () {
-  const [appointments, setAppointments] = useState()
+  const { data: appointments, error, loading } = useFetch({
+    endpoint: APPOINTMENTS_WEEK
+  })
 
-  useEffect(() => {
-    fetch(APPOINTMENTS_WEEK)
-      .then(res => res.json())
-      .then(data => {
-        setAppointments(data)
-      })
-      .catch(error => {
-        throw error
-      })
-  }, [])
-
-  return appointments
+  return { data: appointments || [], error, loading }
 }

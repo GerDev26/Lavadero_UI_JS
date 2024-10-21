@@ -78,3 +78,27 @@ export function TableRowItem ({ col, children }) {
     </td>
   )
 }
+
+export function SkeletonRows ({ cols, tableName }) {
+  return (
+    <Table cols={cols} tableName={tableName}>
+      <tr>
+        <td colSpan={cols.length + 1} rowSpan={cols.length - 1} className='w-screen md:w-full h-72 bg-gray-900 animate-skeletonLoading text-transparent text-2xl'>
+          Cargando...
+        </td>
+      </tr>
+    </Table>
+  )
+}
+
+export function EmptyTable ({ cols, tableName }) {
+  return (
+    <Table cols={cols} tableName={tableName}>
+      <tr>
+        <td colSpan={cols.length + 1} rowSpan={5} className='w-screen md:w-full text-center h-20 text-xl'>
+          No hay turnos disponibles
+        </td>
+      </tr>
+    </Table>
+  )
+}

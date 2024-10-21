@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useContext, useEffect, useState } from 'react'
-import { EmployCompleteAppointmentTable, EmployReserveAppointmentTable } from '../components/CRUD/Table'
 import { AppointmentContext, AppointmentProvider } from '../context/AppointmentContext'
 import { useAppointments } from '../hooks/useAppointments'
 import { getActualDate } from '../helpers/dateHelpers'
+import { EmployCompletedAppointmentTable, EmployReservedAppointmentTable } from '../components/Tables/AppointmentsTable'
 
 export function EmployAppointments () {
   return (
@@ -20,25 +20,27 @@ function Crud () {
   const actualDate = getActualDate()
   console.log(actualDate)
   const [date, setDate] = useState(actualDate)
-  const appointments = useAppointments(date)
+  const [month, setMonth] = useState('')
+  const { data, error, loading } = useAppointments({ month: '9' })
 
-  useEffect(() => {
-    console.log(appointments)
-    setAppointments(appointments)
-  }, [appointments])
+  const handleMonth = (m) => {
+    const [a, formattedMonth] = m.target.value.split('-')
+    setMonth(formattedMonth)
+    setDate('')
+  }
+  const handleDate = (d) => {
+    setDate(d.target.value)
+    setMonth('')
+  }
 
   return (
     <div className='m-auto flex gap-8 my-8 w-fit'>
       <div>
         <div className='flex justify-between items-center'>
-          <h3 className='text-2xl font-semibold m-1'>Reservados</h3>
-          <input type='date' value={date} onChange={(d) => { setDate(d.target.value) }} />
+          <input type='date' value={date} onChange={(d) => { handleDate(d) }} />
+          <input type='month' onChange={(m) => { handleMonth(m) }} />
         </div>
-        <EmployReserveAppointmentTable />
-      </div>
-      <div>
-        <h3 className='text-2xl font-semibold m-1'>Completados</h3>
-        <EmployCompleteAppointmentTable />
+        <EmployReservedAppointmentTable tableName='Reservados' date={date} month={month} />
       </div>
     </div>
   )

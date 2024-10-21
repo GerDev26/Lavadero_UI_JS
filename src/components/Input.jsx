@@ -338,7 +338,7 @@ export function Dropdown ({ initialValue = '', labelText, options, name }) {
   const [isActive, setIsActive] = useState(false)
 
   // styles
-  const listHeightStyle = isActive ? 'max-h-56' : 'max-h-0'
+  const listHeightStyle = isActive ? 'max-h-96' : 'max-h-0'
   const valueStyle = isActive ? 'bg-gray-700' : 'bg-gray-800'
   const arrowValueStyle = isActive ? 'rotate-180' : 'rotate-0'
 
@@ -363,7 +363,7 @@ export function Dropdown ({ initialValue = '', labelText, options, name }) {
       <div className='h-12 overflow-hidden'>
         <ul
           onClick={() => setIsActive(!isActive)}
-          className={`absolute z-20 transition-all duration-300 flex flex-col w-fit min-w-44 p-1 h-fit gap-1 min-h-12 bg-gray-800 overflow-hidden text-white rounded-sm ${listHeightStyle}`}
+          className={`absolute z-20 transition-all duration-300 flex flex-col w-fit min-w-44 p-1 gap-1 min-h-12 bg-gray-800 overflow-hidden text-white rounded-sm ${listHeightStyle}`}
         >
           <div
             className={`transition-all flex-shrink-0 h-[40px] w-full flex justify-between px-2 items-center rounded-sm cursor-pointer hover:bg-gray-700 ${valueStyle}`}

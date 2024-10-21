@@ -174,7 +174,7 @@ function UserVehiclesList () {
         : <div className='w-full h-full flex justify-center items-center row-span-2 col-span-2 md:col-span-4 p-8'>
           <div className=' w-20 h-20 border-b-2 animate-spin border-white rounded-full' />
 
-        </div>
+          </div>
       }
     </ul>
   )

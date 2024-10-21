@@ -1,5 +1,5 @@
 const API = {
-  local: 'http://192.168.100.143:8000/api',
+  local: 'http://127.0.0.1:8000/api',
   production: 'https://lavaderoapi-production.up.railway.app/api'
 }
 

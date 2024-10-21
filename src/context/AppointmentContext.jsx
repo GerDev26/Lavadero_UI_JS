@@ -51,7 +51,6 @@ export const AppointmentProvider = ({ children }) => {
       newAppointment.state = 'Reservado'
       console.log('Completo a reservado')
     }
-    console.log('Hola')
     dispatch({ type: 'UPDATE_ITEM', itemType: 'appointments', item: selectedAppointment, modifyItem: newAppointment })
     try {
       releaseAppointment(selectedAppointment.id)
