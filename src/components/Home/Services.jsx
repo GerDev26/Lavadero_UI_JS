@@ -21,7 +21,7 @@ function ServiceItem ({ id, text, imgUrl, description }) {
 
   useEffect(() => {
     if (role === 'cliente') {
-      setLink('/turno/' + id)
+      setLink('/reservar/' + id)
     } else {
       setLink('/login')
     }

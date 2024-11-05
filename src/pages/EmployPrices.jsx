@@ -2,20 +2,23 @@ import { useContext } from 'react'
 import { EmployPricesTable } from '../components/Tables/PricesTable'
 import { ServiceDropdown, TypeDropdown } from '../components/Input'
 import { InputContext, InputContextProvider } from '../context/InputContext'
+import { PricesProvider } from '../context/PricesContext'
 
 export function EmployPrices () {
   return (
-    <InputContextProvider>
-      <div className='w-full gap-8 m-auto min-h-[40vh] p-2'>
-        <div className='flex gap-2 flex-wrap mb-2 max-h-18'>
+    <PricesProvider>
+      <InputContextProvider>
+        <div className='w-full gap-8 m-auto min-h-[40vh] p-2'>
+          <div className='flex gap-2 flex-wrap mb-2 max-h-18'>
 
-          <TypeDropdown />
-          <ServiceDropdown />
-          <ClearButton />
+            <TypeDropdown />
+            <ServiceDropdown />
+            <ClearButton />
+          </div>
+          <EmployPricesTable />
         </div>
-        <EmployPricesTable />
-      </div>
-    </InputContextProvider>
+      </InputContextProvider>
+    </PricesProvider>
   )
 }
 

@@ -3,13 +3,19 @@ import { usePrices } from '../../hooks/usePrices'
 import { Table, TableRow, TableRowItem, SkeletonRows, EmptyTable, UpdateOption } from './BaseTable'
 import { InputContext } from '../../context/InputContext'
 import { PricesContext } from '../../context/PricesContext'
-import { dataReducer } from '../../reducers/dataReducer'
 import { ModalContext } from '../../context/ModalContext'
 
 export function EmployPricesTable ({ tableName = 'Precios' }) {
   const { fields } = useContext(InputContext)
-  const { prices, loading, error } = usePrices({ vehicleType: fields.vehicleType, service: fields.service })
-  const cols = ['Valor', 'Servicio', 'Tipo']
+  const { setPrices, prices } = useContext(PricesContext)
+  const { data, loading, error } = usePrices({ vehicleType: fields.vehicleType === 'Opcion' ? '' : fields.vehicleType, service: fields.service === 'Opcion' ? '' : fields.service })
+  const cols = ['Valor', 'Servicio', 'Tipo', 'Opcion']
+
+  useEffect(() => {
+    if (!loading && data) {
+      setPrices(data)
+    }
+  }, [data, loading])
 
   if (loading) {
     return <SkeletonRows />
@@ -23,7 +29,9 @@ export function EmployPricesTable ({ tableName = 'Precios' }) {
       ? (
         <Table cols={cols} tableName={tableName}>
           {prices.map((price) => (
-            <TableRow key={price.id}>
+            <TableRow
+              key={price.id}
+            >
               <TableRowItem col={cols[0]}>${price.value}</TableRowItem>
               <TableRowItem col={cols[1]}>{price.service}</TableRowItem>
               <TableRowItem col={cols[2]}>{price.vehicleType}</TableRowItem>

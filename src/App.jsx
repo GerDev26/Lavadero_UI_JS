@@ -16,6 +16,9 @@ import { InputContextProvider } from './context/InputContext'
 import { AdminUsers } from './pages/AdminUsers'
 import { AdminPrices } from './pages/AdminPrices'
 import { AdminAppointments } from './pages/AdminAppointments'
+import { Prices } from './pages/Prices'
+import { Appointments } from './pages/Appointments'
+import { Users } from './pages/Users'
 
 export default function App () {
   return (
@@ -29,23 +32,17 @@ export default function App () {
 
         <Route element={<SimpleLayout />}>
           <Route path='/' element={<Home />} />
-          <Route path='/misvehiculos' element={<ClientVehicles />} />
-          <Route path='/misturnos' element={<ClientAppointments />} />
+          <Route path='/vehiculos' element={<ClientVehicles />} />
           <Route
-            path='/turno/:service' element={
+            path='/reservar/:service' element={
               <InputContextProvider>
                 <AppointmentReserve />
               </InputContextProvider>
             }
           />
-          <Route path='/precios' element={<EmployPrices />} />
-          <Route path='/preciosAdmin' element={<AdminPrices />} />
-          <Route path='/turnosAdmin' element={<AdminAppointments />} />
-        </Route>
-
-        <Route element={<SimpleLayout />}>
-          <Route path='/turnos' element={<EmployAppointments />} />
-          <Route path='/usuarios' element={<AdminUsers />} />
+          <Route path='/precios' element={<Prices />} />
+          <Route path='/turnos' element={<Appointments />} />
+          <Route path='/usuarios' element={<Users />} />
         </Route>
       </Routes>
     </>

@@ -69,25 +69,25 @@ export async function closeSession ({ token }) {
   }
 }
 
-export async function sendPasswordToken ({ email }) {
+export async function sendPasswordToken ({ email = 'example@example.com' }) {
   const res = await fetch(SEND_PASSWORD_TOKEN, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       Accept: 'application/json'
     },
-    body: JSON.stringify(email)
+    body: JSON.stringify({ email })
   })
-  if (res.status === 404) {
-    throw new Error('Email no registrado')
-  }
   if (!res.ok) {
-    throw new Error('Error al enviar la contraseña')
+    const errorText = await res.text()
+    throw new Error(`Error ${res.status}: ${errorText}`)
   }
   const data = await res.json()
   console.log(data)
 }
 export async function resetPassword ({ token, password }) {
+  console.log(token)
+  console.log(password)
   const res = await fetch(RESET_PASSWORD, {
     method: 'POST',
     headers: {

@@ -1,6 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { InputEmail } from '../components/Input'
-import { mapFields } from '../helpers/formHelpers'
 import { sendPasswordToken } from '../services/authService'
 import { InputContext, InputContextProvider } from '../context/InputContext'
 import { useContext } from 'react'
@@ -20,16 +19,13 @@ export function SendPassword () {
 function Form () {
   const navigate = useNavigate()
   const { fields, setInvalidForm } = useContext(InputContext)
-  const newStructure = {
-    Email: 'email'
-  }
 
   const handlesubmit = async (formEvent) => {
     formEvent.preventDefault()
-    const mappedFields = mapFields({ formFields: fields, newStructure })
     setInvalidForm(true)
+    console.log(fields.email)
     try {
-      await sendPasswordToken({ email: mappedFields })
+      await sendPasswordToken({ email: fields.email })
       // eslint-disable-next-line no-undef
       alert('Se envio con exito')
     } catch (error) {

@@ -53,8 +53,8 @@ function ClientMenu () {
   return (
     <>
       <SessionItemCheck>
-        <Item text='mis turnos' to='/misTurnos' />
-        <Item text='mis vehiculos' to='/misVehiculos' />
+        <Item text='mis turnos' to='/turnos' />
+        <Item text='mis vehiculos' to='/vehiculos' />
         <CloseSessionItem />
       </SessionItemCheck>
     </>

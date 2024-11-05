@@ -27,7 +27,7 @@ function Form () {
     formEvent.preventDefault()
     setInvalidForm(true)
     try {
-      await resetPassword({ token, password: fields.Contraseña })
+      await resetPassword({ token, password: fields.password })
       // eslint-disable-next-line no-undef
       alert('Se reinicio la contraseña con exito')
     } catch (error) {
