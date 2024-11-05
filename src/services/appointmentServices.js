@@ -87,3 +87,23 @@ export async function completeAppointment (id) {
   console.log(data)
   return data
 }
+
+export async function createAppointment (appointment) {
+  const token = getAccessToken()
+  const res = await fetch(APPOINTMENTS_ENDPOINT, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(appointment)
+  })
+  if (!res.ok) {
+    const error = await res.json()
+    throw error
+  }
+  const data = await res.json()
+  console.log(data)
+  return data
+}

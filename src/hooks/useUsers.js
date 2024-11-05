@@ -1,22 +1,35 @@
 import { useEffect, useState } from 'react'
-import { USER_ROLE, USERS_ENDPOINT } from '../resources/myApi'
-import { getAccessToken, removeAccessToken } from '../helpers/tokenHelpers'
+import { ROLE_ENDPOINT, USER_ROLE, USERS_ENDPOINT } from '../resources/myApi'
+import { getAccessToken } from '../helpers/tokenHelpers'
+import { useFetch } from './useFetch'
 
+export function useRoles () {
+  const token = getAccessToken()
+
+  const { data, loading, error } = useFetch({
+    endpoint: ROLE_ENDPOINT,
+    headers: {
+      Authorization: `Bearer ${token}`
+    }, // Agrega headers adicionales si los necesitas
+    queryParams: '' // Agrega query params si es necesario
+  })
+
+  // Retornamos los datos y el estado de carga y error
+  return { data, loading, error }
+}
 export function useAllUsers () {
-  const [users, setUsers] = useState([])
+  const token = getAccessToken()
 
-  useEffect(() => {
-    fetch(USERS_ENDPOINT)
-      .then(async res => await res.json())
-      .then(data => {
-        setUsers(data)
-      })
-      .catch(error => {
-        console.log(error)
-      })
-  }, [])
+  const { data, loading, error } = useFetch({
+    endpoint: USERS_ENDPOINT,
+    headers: {
+      Authorization: `Bearer ${token}`
+    }, // Agrega headers adicionales si los necesitas
+    queryParams: '' // Agrega query params si es necesario
+  })
 
-  return users
+  // Retornamos los datos y el estado de carga y error
+  return { data, loading, error }
 }
 
 export function useCheckUserRole (rechargeRole = false) {

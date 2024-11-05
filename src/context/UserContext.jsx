@@ -1,6 +1,7 @@
 import { createContext, useReducer } from 'react'
 import { dataReducer } from '../reducers/dataReducer'
-import { CreateUser, DeleteUser } from '../services/userService'
+import { CreateUser, DeleteUser, UpdateUser } from '../services/userService'
+import { getDescByRoleId } from '../helpers/roleHelpers'
 
 const initialState = {
   users: []
@@ -43,8 +44,18 @@ export const UsersProvider = ({ children }) => {
     }
   }
 
-  const updateUser = (selectedUser, modifyUser) => {
+  const updateUser = async (selectedUser, modifyUser) => {
     dispatch({ type: 'UPDATE_ITEM', itemType: 'users', item: selectedUser, modifyItem: modifyUser })
+
+    const prevUsersState = [...state.users]
+    try {
+      const newUser = await UpdateUser(selectedUser.id, modifyUser)
+      newUser.role = { description: getDescByRoleId(newUser.role_id) }
+      dispatch({ type: 'UPDATE_ITEM', itemType: 'users', item: selectedUser, modifyItem: newUser })
+    } catch (error) {
+      console.error('Error updating vehicle:', error)
+      dispatch({ type: 'SET_ITEMS', itemType: 'users', itemList: prevUsersState })
+    }
   }
 
   return (

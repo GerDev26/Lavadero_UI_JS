@@ -1,47 +1,45 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useContext, useEffect, useState } from 'react'
-import { AppointmentContext, AppointmentProvider } from '../context/AppointmentContext'
-import { useAppointments } from '../hooks/useAppointments'
-import { getActualDate } from '../helpers/dateHelpers'
-import { EmployCompletedAppointmentTable, EmployReservedAppointmentTable } from '../components/Tables/AppointmentsTable'
+import { InputContextProvider } from '../context/InputContext'
+import { AppointmentStateDropdown } from '../components/Input'
+import { AppointmentProvider } from '../context/AppointmentContext'
+import { useState } from 'react'
+import { EmployAppointmentTable } from '../components/Tables/AppointmentsTable'
 
 export function EmployAppointments () {
-  return (
-    <>
-      <AppointmentProvider>
-        <Crud />
-      </AppointmentProvider>
-    </>
-  )
-}
-
-function Crud () {
-  const { setAppointments } = useContext(AppointmentContext)
-  const actualDate = getActualDate()
-  console.log(actualDate)
-  const [date, setDate] = useState(actualDate)
+  const [date, setDate] = useState('')
   const [month, setMonth] = useState('')
-  const { data, error, loading } = useAppointments({ month: '9' })
+  const [monthValue, setMonthValue] = useState('')
 
   const handleMonth = (m) => {
     const [a, formattedMonth] = m.target.value.split('-')
     setMonth(formattedMonth)
+    setMonthValue(m.target.value)
     setDate('')
   }
   const handleDate = (d) => {
     setDate(d.target.value)
     setMonth('')
+    setMonthValue('')
   }
 
   return (
-    <div className='m-auto flex gap-8 my-8 w-fit'>
-      <div>
-        <div className='flex justify-between items-center'>
-          <input type='date' value={date} onChange={(d) => { handleDate(d) }} />
-          <input type='month' onChange={(m) => { handleMonth(m) }} />
-        </div>
-        <EmployReservedAppointmentTable tableName='Reservados' date={date} month={month} />
-      </div>
-    </div>
+    <AppointmentProvider>
+      <InputContextProvider>
+        <section className='p-2 my-2'>
+          <div className='flex flex-wrap gap-2 items-end justify-end mb-1'>
+            <div>
+              <h3 className='font-bold'>Fecha</h3>
+              <input className='px-2 bg-gray-800 text-white rounded-sm h-12' value={date} type='date' onChange={(d) => { handleDate(d) }} />
+            </div>
+            <div>
+              <h3 className='font-bold'>Mes</h3>
+              <input className='px-2 bg-gray-800 text-white rounded-sm h-12' value={monthValue} type='month' onChange={(d) => { handleMonth(d) }} />
+            </div>
+            <AppointmentStateDropdown initialValue='Reservado' />
+          </div>
+          <EmployAppointmentTable date={date} month={month} />
+        </section>
+      </InputContextProvider>
+    </AppointmentProvider>
   )
 }

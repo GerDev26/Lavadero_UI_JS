@@ -56,6 +56,7 @@ export async function deleteVehicle (id) {
 }
 export async function updateVehicle (id, modifyVehicle) {
   modifyVehicle.vehicleType = getTypeIdByDescription(modifyVehicle.vehicleType)
+  console.log(modifyVehicle)
   try {
     const token = getAccessToken()
     const res = await fetch(VEHICLE_ENDPOINT + id, {

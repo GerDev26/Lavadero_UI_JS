@@ -1,29 +1,17 @@
-import { useEffect, useState } from 'react'
 import { USER_VEHICLES } from '../resources/myApi'
 import { getAccessToken } from '../helpers/tokenHelpers'
+import { useFetch } from './useFetch'
 
 export function useUserVehicles () {
-  const [vehicles, setVehicles] = useState()
   const token = getAccessToken()
 
-  useEffect(() => {
-    fetch(USER_VEHICLES, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        Accept: 'application/json'
-      }
-    })
-      .then(res => {
-        return res.json()
-      })
-      .then(data => {
-        setVehicles(data)
-      })
-      .catch(error => {
-        setVehicles([])
-        console.error('Error fetching vehicles:', error)
-      })
-  }, [])
+  const { data: vehicles, loading, error } = useFetch({
+    endpoint: USER_VEHICLES,
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json'
+    }
+  })
 
-  return vehicles
+  return { vehicles: vehicles || [], loading, error }
 }

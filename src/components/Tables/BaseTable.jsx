@@ -1,14 +1,13 @@
-import { MinusCircleIcon, PencilIcon, PlusCircleIcon, TrashIcon } from '@heroicons/react/20/solid'
+import { CheckCircleIcon, MinusCircleIcon, PencilIcon, PlusCircleIcon, TrashIcon, XCircleIcon } from '@heroicons/react/20/solid'
 import { useState } from 'react'
 
 export function Table ({ cols, children, tableName }) {
   const [isOpened, setIsOpened] = useState(true)
 
   const tBodyStyle = isOpened ? 'flex' : 'hidden'
-  console.log(tBodyStyle)
 
   return (
-    <div>
+    <div className='overflow-hidden'>
       <div
         className='flex bg-gray-950 w-full items-center justify-between px-2 md:justify-center cursor-pointer md:cursor-default mb-1'
         onClick={() => setIsOpened(!isOpened)}
@@ -36,50 +35,69 @@ export function Table ({ cols, children, tableName }) {
   )
 }
 
-export function TableRow ({ deleteCallback = false, updateCallback = false, children }) {
-  const existOptions = deleteCallback || updateCallback
+export function TableRow ({ options = [], children }) {
+  if (options.length > 0) {
+    return (
+      <tr className='grid grid-col-1 grid-flow-row md:table-row bg-gray-100 rounded-sm border-b-2 border-b-gray-300'>
+        {children}
+
+        <td className='row-start-1 py-4 flex justify-between items-center md:justify-center bg-gray-700 md:bg-transparent p-3'>
+          <span className='md:hidden font-bold text-xl text-white'>Opciones</span>
+          <div className='flex gap-1'>
+            {options.map(option => option)}
+          </div>
+        </td>
+
+      </tr>
+    )
+  }
+
   return (
     <tr className='grid grid-col-1 grid-flow-row md:table-row bg-gray-100 rounded-sm border-b-2 border-b-gray-300'>
       {children}
-      {
-        existOptions
-          ? <td className='row-start-1 py-4 flex justify-between items-center md:justify-center bg-gray-700 md:bg-transparent p-3'>
-            <span className='md:hidden font-bold text-xl text-white'>Opciones</span>
-            <div className='flex gap-4'>
-              {
-          deleteCallback
-            ? <div className='p-1 bg-red-100 rounded-md active:scale-95 hover:scale-105 '>
-              <TrashIcon onClick={deleteCallback} className='text-red-700 drop-shadow-lg m-auto w-6 cursor-pointer' />
-              </div>
-            : ''
-          }
-              {
-          updateCallback
-            ? <div className='p-1 bg-yellow-100 rounded-md active:scale-95 hover:scale-105'>
-              <PencilIcon onClick={updateCallback} className='text-yellow-600 drop-shadow-lg m-auto w-6 cursor-pointer' />
-              </div>
-            : ''
-          }
-
-            </div>
-            </td>
-          : ''
-
-      }
     </tr>
   )
 }
+export function DeleteOption ({ deleteCallback }) {
+  return (
+    <div className='p-1 bg-red-100 rounded-md active:scale-95 hover:scale-105 '>
+      <TrashIcon onClick={deleteCallback} className='text-red-700 drop-shadow-lg m-auto w-6 cursor-pointer' />
+    </div>
+  )
+}
+export function UpdateOption ({ updateCallback }) {
+  return (
+    <div className='p-1 bg-yellow-100 rounded-md active:scale-95 hover:scale-105'>
+      <PencilIcon onClick={updateCallback} className='text-yellow-600 drop-shadow-lg m-auto w-6 cursor-pointer' />
+    </div>
+  )
+}
 
-export function TableRowItem ({ col, children }) {
+export function ReleaseOption ({ releaseCallback }) {
+  return (
+    <div className='p-1 bg-red-100 rounded-md active:scale-95 hover:scale-105'>
+      <XCircleIcon onClick={releaseCallback} className='text-red-700 drop-shadow-lg m-auto w-6 h-6 cursor-pointer' />
+    </div>
+  )
+}
+export function CompleteOption ({ completeCallback }) {
+  return (
+    <div className='p-1 bg-green-100 rounded-md active:scale-95 hover:scale-105'>
+      <CheckCircleIcon onClick={completeCallback} className='text-green-600 drop-shadow-lg m-auto w-6 cursor-pointer' />
+    </div>
+  )
+}
+
+export function TableRowItem ({ col, children, normal }) {
   return (
     <td className='flex gap-2 md:table-cell p-3'>
       <span className='md:hidden'>{col}</span>
-      <p className='font-bold md:font-normal capitalize'>{children}</p>
+      <p className={`font-bold md:font-normal ${normal ? '' : 'capitalize'}`}>{children}</p>
     </td>
   )
 }
 
-export function SkeletonRows ({ cols, tableName }) {
+export function SkeletonRows ({ cols = [], tableName = 'Cargando...' }) {
   return (
     <Table cols={cols} tableName={tableName}>
       <tr>
@@ -91,12 +109,12 @@ export function SkeletonRows ({ cols, tableName }) {
   )
 }
 
-export function EmptyTable ({ cols, tableName }) {
+export function EmptyTable ({ cols, tableName, message = 'No hay turnos disponibles' }) {
   return (
     <Table cols={cols} tableName={tableName}>
       <tr>
         <td colSpan={cols.length + 1} rowSpan={5} className='w-screen md:w-full text-center h-20 text-xl'>
-          No hay turnos disponibles
+          {message}
         </td>
       </tr>
     </Table>

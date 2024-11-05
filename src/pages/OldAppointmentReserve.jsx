@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useContext, useEffect } from 'react'
 import { useAppointmentHour } from '../hooks/useAppointments'
 import { useUserVehicles } from '../hooks/useVehicles'
@@ -47,18 +46,28 @@ function ReserveForm () {
   )
 }
 function VehicleOptions () {
-  const vehicles = useUserVehicles()
+  const { vehicles, loading, error } = useUserVehicles()
+
+  if (loading) {
+    return <p className=''>Cargando vehículos...</p>
+  }
+
+  if (error) {
+    return <p>Error al cargar los vehículos</p>
+  }
+
   return (
     <div className='flex flex-col gap-2 p-2 overflow-hidden'>
-      {
-      (vehicles.length > 0)
-        ? vehicles.map(vehicle => (
-          <UserVehicle key={vehicle.id} id={vehicle.id} domain={vehicle.vehicleDomain} type={vehicle.vehicleType} />
-        ))
-        : <p>No Hay vehiculos</p>
-    }
+      {vehicles.length > 0
+        ? (
+            vehicles.map(vehicle => (
+              <UserVehicle key={vehicle.id} id={vehicle.id} domain={vehicle.vehicleDomain} type={vehicle.vehicleType} />
+            ))
+          )
+        : (
+          <p>No hay vehículos</p>
+          )}
     </div>
-
   )
 }
 function UserVehicle ({ id, domain, type }) {

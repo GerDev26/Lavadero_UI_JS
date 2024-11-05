@@ -1,7 +1,6 @@
 import './App.css'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import { Home } from './pages/Home'
-import { AdminCrud } from './pages/AdminCrud'
 import { Login } from './pages/Login'
 import { Signup } from './pages/Signup'
 import { ResetPassword } from './pages/ResetPassword'
@@ -14,6 +13,9 @@ import { EmployAppointments } from './pages/EmployAppointments'
 import { EmployPrices } from './pages/EmployPrices'
 import { SimpleLayout } from './layouts/SimpleLayout'
 import { InputContextProvider } from './context/InputContext'
+import { AdminUsers } from './pages/AdminUsers'
+import { AdminPrices } from './pages/AdminPrices'
+import { AdminAppointments } from './pages/AdminAppointments'
 
 export default function App () {
   return (
@@ -37,11 +39,13 @@ export default function App () {
             }
           />
           <Route path='/precios' element={<EmployPrices />} />
+          <Route path='/preciosAdmin' element={<AdminPrices />} />
+          <Route path='/turnosAdmin' element={<AdminAppointments />} />
         </Route>
 
         <Route element={<SimpleLayout />}>
-          <Route path='/CRUD' element={<AdminCrud />} />
           <Route path='/turnos' element={<EmployAppointments />} />
+          <Route path='/usuarios' element={<AdminUsers />} />
         </Route>
       </Routes>
     </>

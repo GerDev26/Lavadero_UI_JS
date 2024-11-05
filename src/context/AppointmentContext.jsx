@@ -1,6 +1,6 @@
 import { createContext, useEffect, useReducer, useState } from 'react'
 import { dataReducer } from '../reducers/dataReducer'
-import { completeAppointment, deleteAppointment, releaseAppointment } from '../services/appointmentServices'
+import { completeAppointment, createAppointment, deleteAppointment, releaseAppointment } from '../services/appointmentServices'
 
 const initialState = {
   appointments: []
@@ -29,6 +29,17 @@ export const AppointmentProvider = ({ children }) => {
     setAvaibleAppointments(state.appointments.filter(appointment => appointment.state === 'Disponible'))
   }, [state.appointments])
 
+  const createNewAppointment = async (newAppointmentData) => {
+    const prevAppointmentState = [...state.appointments]
+    try {
+      const createdAppointment = await createAppointment(newAppointmentData)
+      dispatch({ type: 'ADD_ITEM', itemType: 'appointments', item: createdAppointment })
+    } catch (error) {
+      console.error('Error creating appointment:', error)
+      dispatch({ type: 'SET_ITEMS', itemType: 'appointments', itemList: prevAppointmentState })
+    }
+  }
+
   const removeAppointment = async (selectedAppointment) => {
     const prevAppointmentState = [...state.appointments]
     dispatch({ type: 'DELETE_ITEM', itemType: 'appointments', item: selectedAppointment })
@@ -49,7 +60,6 @@ export const AppointmentProvider = ({ children }) => {
     }
     if (newAppointment.state === 'Completo') {
       newAppointment.state = 'Reservado'
-      console.log('Completo a reservado')
     }
     dispatch({ type: 'UPDATE_ITEM', itemType: 'appointments', item: selectedAppointment, modifyItem: newAppointment })
     try {
@@ -74,7 +84,7 @@ export const AppointmentProvider = ({ children }) => {
   }
 
   return (
-    <AppointmentContext.Provider value={{ appointments: state.appointments, removeAppointment, releaseReservedAppointment, completeReservedAppointment, setAppointments, releaseAppointment, completedAppointments, reservedAppointments, avaibleAppointments }}>
+    <AppointmentContext.Provider value={{ appointments: state.appointments, createNewAppointment, removeAppointment, releaseReservedAppointment, completeReservedAppointment, setAppointments, releaseAppointment, completedAppointments, reservedAppointments, avaibleAppointments }}>
       {children}
     </AppointmentContext.Provider>
   )

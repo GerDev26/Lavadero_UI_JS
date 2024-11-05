@@ -1,4 +1,5 @@
 export function firstLetterMayus (text) {
-  const firstLetter = text.slice(0, 1)
-  return firstLetter.toUpperCase() + text.slice(1)
+  const modifyText = text
+  const firstLetter = modifyText.slice(0, 1)
+  return firstLetter.toUpperCase() + modifyText.slice(1)
 }

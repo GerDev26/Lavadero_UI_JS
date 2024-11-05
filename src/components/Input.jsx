@@ -6,6 +6,7 @@ import { InputContext } from '../context/InputContext'
 import { CheckIcon } from '@heroicons/react/16/solid'
 import { useAllServices } from '../hooks/useServices'
 import { firstLetterMayus } from '../helpers/stringHelpers'
+import { useRoles } from '../hooks/useUsers'
 
 export function InputEmail ({ initialValue }) {
   const labelText = 'Email'
@@ -57,7 +58,7 @@ export function InputPassword ({ initialValue }) {
     <Input labelText={labelText} name={name} errorMessage={message} validateInput={validateInput} type='password' initialValue={initialValue} />
   )
 }
-export function InputText ({ labelText, name = '' }) {
+export function InputText ({ labelText, name = '', initialValue }) {
   name = name === '' ? labelText : name
   const { validateField } = useContext(InputContext)
   const [message, setMessage] = useState('')
@@ -78,11 +79,11 @@ export function InputText ({ labelText, name = '' }) {
     }
   }
   return (
-    <Input labelText={labelText} name={name} errorMessage={message} validateInput={validateInput} />
+    <Input labelText={labelText} name={name} errorMessage={message} initialValue={initialValue} validateInput={validateInput} />
   )
 }
 
-export function InputNumber ({ labelText, name = '', className = '' }) {
+export function InputNumber ({ labelText, name = '', className = '', initialValue }) {
   name = name === '' ? labelText : name
   const { validateField } = useContext(InputContext)
   const [message, setMessage] = useState('')
@@ -101,7 +102,7 @@ export function InputNumber ({ labelText, name = '', className = '' }) {
   }
 
   return (
-    <Input className={className} labelText={labelText} name={name} errorMessage={message} validateInput={validateInput} />
+    <Input className={className} labelText={labelText} name={name} errorMessage={message} initialValue={initialValue} validateInput={validateInput} />
   )
 }
 
@@ -314,6 +315,17 @@ function Input ({ className = '', labelText, errorMessage, validateInput, initia
   )
 }
 
+export function RoleDropdown ({ initialValue }) {
+  const { data } = useRoles()
+
+  if (data) {
+    const filterData = data.filter(d => d.description !== 'administrador')
+    const values = filterData.map(role => role.description)
+    return (
+      <Dropdown initialValue={initialValue} options={values} labelText='Rol' name='role_id' />
+    )
+  }
+}
 export function ServiceDropdown ({ initialValue }) {
   const services = useAllServices()
   const values = services.map(vehicle => vehicle.service_name)
@@ -329,6 +341,12 @@ export function TypeDropdown ({ initialValue }) {
   return (
     <Dropdown initialValue={initialValue} options={values} labelText='Tipo' name='vehicleType' />
   )
+}
+
+export function AppointmentStateDropdown ({ initialValue }) {
+  const values = ['Reservado', 'Disponible', 'Completado']
+
+  return <Dropdown initialValue={initialValue} options={values} labelText='Estado' name='state' />
 }
 
 export function Dropdown ({ initialValue = '', labelText, options, name }) {
@@ -359,39 +377,135 @@ export function Dropdown ({ initialValue = '', labelText, options, name }) {
   }, [initialValue])
 
   return (
-    <div className='w-44 bg-blue-300'>
-      <div className='h-12 overflow-hidden'>
+    <div className='overflow-show w-fit'>
+      <h3 className='font-bold'>{labelText}</h3>
+      <div className='h-12 w-fit bg-black'>
         <ul
           onClick={() => setIsActive(!isActive)}
-          className={`absolute z-20 transition-all duration-300 flex flex-col w-fit min-w-44 p-1 gap-1 min-h-12 bg-gray-800 overflow-hidden text-white rounded-sm ${listHeightStyle}`}
+          className={`relative z-20 transition-all duration-300 flex flex-col w-fit p-1 gap-1 min-h-12 bg-gray-800 overflow-hidden text-white rounded-sm ${listHeightStyle}`}
         >
           <div
             className={`transition-all flex-shrink-0 h-[40px] w-full flex justify-between px-2 items-center rounded-sm cursor-pointer hover:bg-gray-700 ${valueStyle}`}
             type='text'
             value='lenguaje'
           >
-            <p className=' cursor-pointer'>{fields[name]}</p>
+            <p className='capitalize cursor-pointer'>{fields[name]}</p>
             <ChevronDownIcon className={`transition-all w-6 text-white ${arrowValueStyle}`} />
           </div>
           {
-        options.map((option, index) => <Option key={index} optionName={firstLetterMayus(option)} callback={handleSelect} actualValue={fields[name]} />)
+        options.map((option, index) => (
+          <Option
+            key={index}
+            optionName={option}
+            callback={handleSelect}
+            actualValue={fields[name]}
+          />
+        ))
       }
         </ul>
+
       </div>
     </div>
   )
 }
 
 function Option ({ optionName, callback, actualValue }) {
-  const iconStyle = optionName === actualValue ? 'opacity-100' : 'opacity-10'
+  const iconStyle = optionName === actualValue ? 'opacity-100' : 'opacity-0'
 
   return (
     <li
       onClick={() => callback(optionName)}
-      className='flex-shrink-0 h-[40px] w-full flex justify-between px-2 items-center bg-gray-800 hover:bg-gray-700 hover:text-blue-500 rounded-sm cursor-pointer'
+      className='relative z-20 flex-shrink-0 h-[40px] w-full flex justify-between px-2 items-center bg-gray-800 hover:bg-gray-700 hover:text-blue-500 rounded-sm cursor-pointer'
     >
-      <p className='cursor-pointer'>{optionName}</p>
+      <p className='cursor-pointer capitalize'>{optionName}</p>
       <CheckIcon className={`text-green-600 w-4 ${iconStyle}`} />
     </li>
+  )
+}
+export function DateInput ({ name, labelText, initialValue = '' }) {
+  const { fields, addField, validateField } = useContext(InputContext)
+
+  const handleDateChange = (e) => {
+    addField(name, e.target.value)
+    validateField(name, true)
+  }
+
+  useEffect(() => {
+    if (initialValue) {
+      validateField(name, true)
+      addField(name, initialValue)
+    } else {
+      validateField(name, false)
+    }
+  }, [initialValue])
+
+  return (
+    <div className='w-fit'>
+      <h3 className='font-bold'>{labelText}</h3>
+      <input
+        type='date'
+        className='bg-gray-800 text-white rounded-sm h-12 px-2'
+        value={fields[name] || ''}
+        onChange={handleDateChange}
+      />
+    </div>
+  )
+}
+export function MonthInput ({ name, labelText, initialValue = '' }) {
+  const { fields, addField, validateField } = useContext(InputContext)
+
+  const handleMonthChange = (e) => {
+    addField(name, e.target.value)
+    validateField(name, true)
+  }
+
+  useEffect(() => {
+    if (initialValue) {
+      validateField(name, true)
+      addField(name, initialValue)
+    } else {
+      validateField(name, false)
+    }
+  }, [initialValue])
+
+  return (
+    <div className='w-fit'>
+      <h3 className='font-bold'>{labelText}</h3>
+      <input
+        type='month'
+        className='bg-gray-800 text-white rounded-sm h-12 px-2'
+        value={fields[name] || ''}
+        onChange={handleMonthChange}
+      />
+    </div>
+  )
+}
+export function TimeInput ({ name, labelText, initialValue = '' }) {
+  const { fields, addField, validateField } = useContext(InputContext)
+
+  const handleTimeChange = (e) => {
+    addField(name, e.target.value)
+    validateField(name, true)
+  }
+
+  useEffect(() => {
+    if (initialValue) {
+      validateField(name, true)
+      addField(name, initialValue)
+    } else {
+      validateField(name, false)
+    }
+  }, [initialValue])
+
+  return (
+    <div className='w-fit'>
+      <h3 className='font-bold'>{labelText}</h3>
+      <input
+        type='time'
+        className='bg-gray-800 text-white rounded-sm h-12 px-2'
+        value={fields[name] || ''}
+        onChange={handleTimeChange}
+      />
+    </div>
   )
 }

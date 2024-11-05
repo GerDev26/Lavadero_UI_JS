@@ -42,5 +42,5 @@ export function useWeekAppointments () {
     endpoint: APPOINTMENTS_WEEK
   })
 
-  return { data: appointments || [], error, loading }
+  return { data: appointments, error, loading }
 }

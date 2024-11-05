@@ -4,7 +4,6 @@ import { UserTable } from '../components/CRUD/Table'
 import { PlusCircleIcon } from '@heroicons/react/20/solid'
 import { UsersProvider } from '../context/UserContext'
 import { useContext } from 'react'
-import { UserModal } from '../components/CRUD/Modal'
 import { ModalContext, ModalProvider } from '../context/ModalContext'
 
 export function AdminCrud () {
@@ -13,7 +12,6 @@ export function AdminCrud () {
 
       <UsersProvider>
         <Navbar />
-        <UserModal />
 
         <div className='m-auto w-fit'>
           <OpenModalBtn text='Añadir Usuario' />
@@ -33,7 +31,7 @@ export function OpenModalBtn ({ text }) {
   }
 
   return (
-    <button onClick={handleOpenModal} className='p-2 my-2 text-white rounded-s bg-green-700 flex gap-2'>
+    <button onClick={handleOpenModal} className='px-2 rounded-sm text-white rounded-s bg-gray-700 flex justify-center items-center h-12 gap-2'>
       <p>{text}</p>
       <PlusCircleIcon className='w-6' />
     </button>

@@ -18,6 +18,9 @@ export function Navbar () {
       case 'empleado':
         setSelectedMenu(<EmployMenu />)
         break
+      case 'administrador':
+        setSelectedMenu(<EmployMenu />)
+        break
 
       default:
         setSelectedMenu(<ClientMenu />)

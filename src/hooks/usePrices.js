@@ -1,24 +1,21 @@
-import { useEffect, useState } from 'react'
 import { PRICES_ENDPOINT } from '../resources/myApi'
+import { useFetch } from './useFetch' // Asegúrate de que el path sea correcto
+import { getAccessToken } from '../helpers/tokenHelpers'
 
-const initialValue = {
-  vehicleType: '',
-  service: ''
-}
+export function usePrices ({ vehicleType = '', service = '' } = { vehicleType: '', service: '' }) {
+  const token = getAccessToken()
+  const queryParams = new URLSearchParams({
+    vehicleType,
+    service
+  }).toString()
 
-export function usePrices ({ vehicleType, service } = initialValue) {
-  const [prices, setPrices] = useState([])
+  console.log(queryParams)
 
-  useEffect(() => {
-    const searchService = 'service=' + service + '&&'
-    const searchVehicleType = 'vehicleType=' + vehicleType + '&&'
-    fetch(PRICES_ENDPOINT + '?' + searchService + searchVehicleType)
-      .then(res => res.json())
-      .then(data => {
-        setPrices(data.data)
-      })
-      .catch(error => { throw error })
-  }, [vehicleType, service])
+  const { data, loading, error } = useFetch({
+    endpoint: PRICES_ENDPOINT,
+    headers: { Authorization: `Bearer ${token}` }, // Añade headers si es necesario
+    queryParams
+  })
 
-  return prices
+  return { data: data?.data, loading, error }
 }
