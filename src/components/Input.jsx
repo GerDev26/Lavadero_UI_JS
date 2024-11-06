@@ -5,7 +5,6 @@ import { useAllTypeOfVehicles } from '../hooks/useTypeOfVehicles'
 import { InputContext } from '../context/InputContext'
 import { CheckIcon } from '@heroicons/react/16/solid'
 import { useAllServices } from '../hooks/useServices'
-import { firstLetterMayus } from '../helpers/stringHelpers'
 import { useRoles } from '../hooks/useUsers'
 
 export function InputEmail ({ initialValue }) {

@@ -6,9 +6,12 @@ import { ArrowDownIcon } from '@heroicons/react/20/solid'
 import { useUserVehicles } from '../hooks/useVehicles'
 import { useNavigate, useParams } from 'react-router-dom'
 import { reserveAppointment } from '../services/appointmentServices'
+import { AuthContext } from '../context/AuthContext'
+import { FullScreenSimpleLoader } from '../components/SimpleLoader'
 
 export function AppointmentReserve () {
   const { service } = useParams()
+  const { role } = useContext(AuthContext)
   const { data: weekAppointments, loading } = useWeekAppointments()
   const { fields, addField, validateField, setInvalidForm } = useContext(InputContext)
   const navigate = useNavigate()
@@ -18,6 +21,13 @@ export function AppointmentReserve () {
     validateField('service_id', true)
     setInvalidForm(true)
   }, [])
+
+  if (!role) {
+    return <FullScreenSimpleLoader />
+  }
+  if (role === 'administrador' || role === 'empleado' || role === 'visitor') {
+    navigate('/')
+  }
 
   const handleSubmit = async (event) => {
     event.preventDefault()

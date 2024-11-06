@@ -1,7 +1,6 @@
 import { FullScreenSimpleLoader } from '../components/SimpleLoader'
 import { useContext } from 'react'
 import { AuthContext } from '../context/AuthContext'
-import { Home } from './Home'
 import { AdminAppointments } from './AdminAppointments'
 import { EmployAppointments } from './EmployAppointments'
 import { ClientAppointments } from './ClientAppointments'

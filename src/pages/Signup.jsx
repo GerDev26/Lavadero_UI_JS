@@ -1,10 +1,19 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { InputEmail, InputNumber, InputPassword, InputText } from '../components/Input'
 import { InputContext, InputContextProvider } from '../context/InputContext'
 import { useContext } from 'react'
 import { AuthContext } from '../context/AuthContext'
+import { FullScreenSimpleLoader } from '../components/SimpleLoader'
 
 export function Signup () {
+  const { role } = useContext(AuthContext)
+  const navigate = useNavigate()
+  if (!role) {
+    return <FullScreenSimpleLoader />
+  }
+  if (role !== 'visitor') {
+    navigate('/')
+  }
   return (
     <>
       <div className='fixed inset-1/2 -translate-x-1/2 -translate-y-1/2 w-[75vw] md:max-w-[950px] z-20 h-[80%] md:max-h-[500px] flex rounded-lg overflow-hidden'>

@@ -9,7 +9,7 @@ export function EmployPricesTable ({ tableName = 'Precios' }) {
   const { fields } = useContext(InputContext)
   const { setPrices, prices } = useContext(PricesContext)
   const { data, loading, error } = usePrices({ vehicleType: fields.vehicleType === 'Opcion' ? '' : fields.vehicleType, service: fields.service === 'Opcion' ? '' : fields.service })
-  const cols = ['Valor', 'Servicio', 'Tipo', 'Opcion']
+  const cols = ['Valor', 'Servicio', 'Tipo']
 
   useEffect(() => {
     if (!loading && data) {
