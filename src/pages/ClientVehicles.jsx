@@ -29,7 +29,9 @@ export function ClientVehicles () {
             <CreateVehicleModal />
           </InputContextProvider>
           <div className='p-2 w-full'>
-            <OpenModalBtn text='Añadir Vehiculo' />
+            <div className='my-1'>
+              <OpenModalBtn text='Añadir Vehiculo' />
+            </div>
             <UserVehiclesTable />
           </div>
         </VehicleProvider>

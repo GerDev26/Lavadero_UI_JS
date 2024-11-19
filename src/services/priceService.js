@@ -4,7 +4,7 @@ import { PRICES_ENDPOINT } from '../resources/myApi'
 export async function updatePrice (priceId, modifyPrice) {
   const token = getAccessToken()
   try {
-    const response = await fetch(PRICES_ENDPOINT + priceId, {
+    const response = await fetch(`${PRICES_ENDPOINT}/${priceId}`, {
       method: 'PATCH',
       headers: {
         Accept: 'application/json',

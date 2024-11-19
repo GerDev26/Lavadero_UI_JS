@@ -22,7 +22,7 @@ export function useDates () {
 
 export function useAppointmentHour (date = '01-01-2024') {
   const { data: appointments, error, loading } = useFetch({
-    endpoint: `${APPOINTMENTS_ENDPOINT}${date}`
+    endpoint: `${APPOINTMENTS_ENDPOINT}/${date}`
   })
 
   return { data: appointments || [], error, loading }

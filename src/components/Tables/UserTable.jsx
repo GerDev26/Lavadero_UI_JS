@@ -36,12 +36,18 @@ export function UserTable ({ tableName = 'Usuarios' }) {
   return users.length > 0
     ? (
       <Table cols={cols} tableName={tableName}>
-        {users.map((user, index) => (
+        {users.map((user) => (
           <TableRow
-            key={index}
+            key={user.id}
             options={[
-              <DeleteOption key={index} deleteCallback={async () => await handleDelete(user)} />,
-              <UpdateOption key={index} updateCallback={() => handleUpdate(user)} />
+              <DeleteOption
+                key={`delete-${user.id}`}
+                deleteCallback={async () => await handleDelete(user)}
+              />,
+              <UpdateOption
+                key={`update-${user.id}`}
+                updateCallback={() => handleUpdate(user)}
+              />
             ]}
           >
             <TableRowItem col={cols[0]}>{user.name}</TableRowItem>

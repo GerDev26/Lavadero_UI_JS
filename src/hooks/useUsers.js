@@ -56,7 +56,6 @@ export function useCheckUserRole (rechargeRole = false) {
     } else {
       setRole('visitor')
     }
-    console.log('render')
   }, [rechargeRole])
   return role
 }

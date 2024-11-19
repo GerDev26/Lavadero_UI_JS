@@ -5,7 +5,7 @@ import { USER_ROLE, USERS_ENDPOINT } from '../resources/myApi'
 export async function DeleteUser (id) {
   const token = getAccessToken()
   try {
-    const response = await fetch(`${USERS_ENDPOINT}${id}`, {
+    const response = await fetch(`${USERS_ENDPOINT}/${id}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -57,11 +57,9 @@ export async function CreateUser (user) {
 }
 export async function UpdateUser (userID, modifyUser) {
   const token = getAccessToken()
-  console.log(modifyUser)
   modifyUser.role_id = getRoleIdByDesc(modifyUser.role_id)
-  console.log(modifyUser)
   try {
-    const response = await fetch(USERS_ENDPOINT + userID, {
+    const response = await fetch(`${USERS_ENDPOINT}/${userID}`, {
       method: 'PATCH',
       headers: {
         Accept: 'application/json',

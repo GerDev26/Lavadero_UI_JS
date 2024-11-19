@@ -89,11 +89,11 @@ export function UserUpdateModal () {
   const { updateValues, setUpdateModal, setUpdateValues } = useContext(ModalContext)
   const { fields } = useContext(InputContext)
 
-  const handleSubmit = async (formEvent) => {
+  const handleSubmit = (formEvent) => {
     formEvent.preventDefault()
     setUpdateModal(false)
     try {
-      await updateUser(updateValues, fields)
+      updateUser(updateValues, fields)
     } catch {
       console.log('error')
     }

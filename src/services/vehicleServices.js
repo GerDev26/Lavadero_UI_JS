@@ -34,7 +34,7 @@ export async function CreateVehicle (vehicle) {
 export async function deleteVehicle (id) {
   try {
     const token = getAccessToken()
-    const res = await fetch(VEHICLE_ENDPOINT + id, {
+    const res = await fetch(`${VEHICLE_ENDPOINT}/${id}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -59,7 +59,7 @@ export async function updateVehicle (id, modifyVehicle) {
   console.log(modifyVehicle)
   try {
     const token = getAccessToken()
-    const res = await fetch(VEHICLE_ENDPOINT + id, {
+    const res = await fetch(`${VEHICLE_ENDPOINT}/${id}`, {
       method: 'PATCH',
       headers: {
         Authorization: `Bearer ${token}`,

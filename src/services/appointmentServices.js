@@ -33,7 +33,7 @@ export async function reserveAppointment (appointment) {
 
 export async function deleteAppointment (id) {
   const token = getAccessToken()
-  const res = await fetch(APPOINTMENTS_ENDPOINT + id, {
+  const res = await fetch(`${APPOINTMENTS_ENDPOINT}/${id}`, {
     method: 'DELETE',
     headers: {
       Accept: 'application/json',
@@ -51,7 +51,7 @@ export async function deleteAppointment (id) {
 }
 export async function releaseAppointment (id) {
   const token = getAccessToken()
-  const res = await fetch(APPOINTMENTS_RELEASE + id, {
+  const res = await fetch(`${APPOINTMENTS_RELEASE}/${id}`, {
     method: 'PATCH',
     headers: {
       Accept: 'application/json',
@@ -70,7 +70,7 @@ export async function releaseAppointment (id) {
 }
 export async function completeAppointment (id) {
   const token = getAccessToken()
-  const res = await fetch(APPOINTMENTS_COMPLETE + id, {
+  const res = await fetch(`${APPOINTMENTS_COMPLETE}/${id}`, {
     method: 'PATCH',
     headers: {
       Accept: 'application/json',
